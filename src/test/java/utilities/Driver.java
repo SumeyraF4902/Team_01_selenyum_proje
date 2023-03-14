@@ -22,10 +22,12 @@ public class Driver {
                     options.addArguments("--remote-allow-origins=*");
                     WebDriverManager.chromedriver().setup();
                     driver = new ChromeDriver(options);
+                    break;
                 }
                 case ("firefox") : {
                     WebDriverManager.firefoxdriver().setup();
                     driver = new FirefoxDriver();
+                    break;
                 }
             }
 
