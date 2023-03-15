@@ -5,9 +5,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.time.Duration;
 
 
 public class LoginStep {
@@ -19,6 +19,7 @@ public class LoginStep {
         PageFactory.initElements(driver,this);
     }
 
+    WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(10));
 
     @FindBy(id = "loginButton")
     WebElement login_button;
@@ -37,6 +38,11 @@ public class LoginStep {
 
     @FindBy(linkText = "Account Management")
     WebElement login_Account_mng;
+
+    public void  waitImplicit(){
+         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+    }
+
 
     public void driverGet(String text){
         driver.get(text);
