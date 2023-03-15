@@ -40,7 +40,7 @@ public class LoginStep {
     WebElement login_Account_mng;
 
     public void  waitImplicit(){
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
     }
 
 
