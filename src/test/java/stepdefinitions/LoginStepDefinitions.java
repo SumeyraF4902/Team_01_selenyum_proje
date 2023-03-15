@@ -29,9 +29,10 @@ public class LoginStepDefinitions {
         ls.clickSubBtn();
     }
 
-    @Then(":Profil simgesine gider ve Account Manegement sekmesini açar")
-    public void profilSimgesineGiderVeAccountManegementSekmesiniAçar() {
-        Duration.ofSeconds(10);
+
+    @Then(":Profil simgesine gider ve Account Manegement sekmesini acar")
+    public void profilSimgesineGiderVeAccountManegementSekmesiniAcar() {
+        ls.waitImplicit();
         ls.clickprofile();
         ls.clickAccount_mng();
     }
