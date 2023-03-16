@@ -1,16 +1,14 @@
 package stepdefinitions;
 
-import io.cucumber.java.en.And;
+
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.openqa.selenium.support.ui.Wait;
 import pages.LoginStep;
 import utilities.ConfigReader;
 import utilities.Driver;
 
-import java.time.Duration;
-import java.util.Properties;
+
 
 public class LoginStepDefinitions {
     LoginStep ls = new LoginStep(Driver.getDriver());
