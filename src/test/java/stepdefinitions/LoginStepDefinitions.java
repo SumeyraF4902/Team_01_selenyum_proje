@@ -32,7 +32,6 @@ public class LoginStepDefinitions {
 
     @Then(":Profil simgesine gider ve Account Manegement sekmesini acar")
     public void profilSimgesineGiderVeAccountManegementSekmesiniAcar() {
-        ls.waitImplicit();
         ls.clickprofile();
         ls.clickAccount_mng();
     }

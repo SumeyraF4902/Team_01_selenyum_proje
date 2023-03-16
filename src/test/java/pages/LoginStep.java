@@ -19,7 +19,7 @@ public class LoginStep {
         PageFactory.initElements(driver,this);
     }
 
-    WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(10));
+
 
     @FindBy(id = "loginButton")
     WebElement login_button;
@@ -39,9 +39,7 @@ public class LoginStep {
     @FindBy(linkText = "Account Management")
     WebElement login_Account_mng;
 
-    public void  waitImplicit(){
-         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-    }
+
 
 
     public void driverGet(String text){
