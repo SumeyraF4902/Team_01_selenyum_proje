@@ -1,17 +1,17 @@
 package Hooks;
 
-import io.cucumber.java.After;
+import io.cucumber.java.*;
 import io.cucumber.java.Scenario;
-import org.junit.Before;
-import org.junit.BeforeClass;
+
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+
 import pages.LoginStep;
 import utilities.ConfigReader;
 import utilities.Driver;
 public class Hooks {
 
-    @BeforeClass
+    @Before
     public void setUp() {
         LoginStep ls = new LoginStep(Driver.getDriver());
         ls.driverGet("https://qa-gm3.quaspareparts.com/");
