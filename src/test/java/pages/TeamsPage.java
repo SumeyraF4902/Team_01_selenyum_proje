@@ -1,2 +1,5 @@
-package pages;public class TeamsPage {
+package pages;
+
+public class TeamsPage {
+
 }
