@@ -25,12 +25,22 @@ public class Hooks {
         ls.clickAccount_mng();
     }
 
-    @After
-    public void tearDown(Scenario scenario) {
-        final byte[] screenshot = ((TakesScreenshot) Driver.getDriver()).getScreenshotAs(OutputType.BYTES);
+    @After(order = 1)
+    public void takeScraenshotOnFailure(Scenario scenario) {
+
         if (scenario.isFailed()) {
-            scenario.attach(screenshot, "image/png", "screenshots");
+
+            TakesScreenshot ts = (TakesScreenshot) Driver.getDriver();
+
+            byte[] src = ts.getScreenshotAs(OutputType.BYTES);
+            scenario.attach(src, "image/png", "screenshot");
         }
+
+    }
+
+    @After(order = 0)
+    public void tearDown() {
         Driver.closeDriver();
+
     }
 }

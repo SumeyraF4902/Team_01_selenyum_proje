@@ -9,8 +9,11 @@ import org.junit.runner.RunWith;
 @RunWith(Cucumber.class)
 @CucumberOptions(
         features = {"src/test/resources/features/login.feature"},
-        glue = {"stepdefinitions","Hooks"},
-        plugin ={"pretty"}
+        glue = {"stepdefinitions"},
+        plugin ={"pretty",
+                "html: target/cucumber-reports",
+                "com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"},
+                monochrome = true
 )
 
 public class login_runner {
