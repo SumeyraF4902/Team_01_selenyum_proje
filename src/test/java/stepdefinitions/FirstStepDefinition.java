@@ -1,6 +1,7 @@
 package stepdefinitions;
 
 import io.cucumber.java.en.*;
+import org.testng.Assert;
 import utilities.Driver;
 
 public class FirstStepDefinition {
@@ -14,6 +15,7 @@ public class FirstStepDefinition {
     @When("Senaryomu calistirdigimda")
     public void senaryomu_calistirdigimda() {
         System.out.println("When step i calisti");
+        Assert.assertTrue(false);
     }
 
     @Then("Senaryomun calistigini konsolda gormeliyim")
