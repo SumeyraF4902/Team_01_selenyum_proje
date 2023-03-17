@@ -14,7 +14,7 @@ public class Hooks {
     @Before
     public void setUp() {
         LoginStep ls = new LoginStep(Driver.getDriver());
-        ls.driverGet("https://qa-gm3.quaspareparts.com/");
+        ls.driverGet(ConfigReader.getProperty("url"));
         ls.clickLogin();
         String email = ConfigReader.getProperty("email").replaceAll(" ","");
         String password = ConfigReader.getProperty("password").replaceAll(" ","");
