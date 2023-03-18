@@ -7,7 +7,7 @@ Feature: US013 Teams Modulu Goruntuleme Testi
     Then Kullanici takimlari liste halinde sayfada gorundugunu dogrular
 
   Scenario: TC002 Kullanici Teams modulundeki ilk takima tiklayarak takimi detayli olarak gorebilmeli
-    When Kullanici ilk siradaki takima tiklar
+    When Kullanici ilk secebildigi takima tiklar
     Then Kullanici tikladigi takimin bilgilerinin detayli olarak sayfada gorundugunu dogrular
 
   Scenario: TC003 Kullanici Teams modulunde bulunan takimlara yeni takimlar ekleyebilmeli
