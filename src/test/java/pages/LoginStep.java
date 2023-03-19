@@ -6,6 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+import utilities.ConfigReader;
 
 import java.time.Duration;
 
@@ -34,15 +36,19 @@ public class LoginStep {
     WebElement login_submit_btn;
 
     @FindBy(xpath = "//span[@class='fw-bold']")
-    WebElement login_email;
+    public WebElement login_email;
 
     @FindBy(linkText = "Account Management")
     WebElement login_Account_mng;
+
+    @FindBy(xpath = "//h5[@class]")
+    public WebElement Authorized;
 
 
 
 
     public void driverGet(String text){
+
         driver.get(text);
     }
 
@@ -66,6 +72,20 @@ public class LoginStep {
 
     public void clickAccount_mng() {
         login_Account_mng.click();
+    }
+
+
+    public void AssertTrue(boolean a){
+        Assert.assertTrue(a);
+    }
+    public String get_Config(String a ){
+       return ConfigReader.getProperty(a);
+
+    }
+
+    public String GetText(WebElement a){
+        return a.getText();
+
     }
 
 }
