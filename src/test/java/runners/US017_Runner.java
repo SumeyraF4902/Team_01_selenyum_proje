@@ -7,13 +7,16 @@ import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        features = {"src/test/resources/features/feature.feature"},
-        glue = {"Hooks","stepdefinitions"},
+        features = {"src/test/resources/features/US017.feature"},
+        glue = {"stepdefinitions","Hooks"},
         tags= "@FirstHooks"
 )
 
-public class firstrunner {
 
 
-        
+
+public class US017_Runner {
+
+
+
 }

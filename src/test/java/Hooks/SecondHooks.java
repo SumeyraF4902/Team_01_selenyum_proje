@@ -9,20 +9,24 @@ import org.openqa.selenium.TakesScreenshot;
 import pages.LoginStep;
 import utilities.ConfigReader;
 import utilities.Driver;
-public class Hooks {
+public class SecondHooks {
 
-    @Before
+    @Before("@SecondHooks")
     public void setUp() {
-        LoginStep ls = new LoginStep(Driver.getDriver());
-        ls.driverGet(ConfigReader.getProperty("url"));
-        ls.clickLogin();
-        String email = ConfigReader.getProperty("email").replaceAll(" ","");
-        String password = ConfigReader.getProperty("password").replaceAll(" ","");
-        ls.typeUsername(email);
-        ls.typePassword(password);
-        ls.clickSubBtn();
-        ls.clickprofile();
-        ls.clickAccount_mng();
+     LoginStep ls = new LoginStep(Driver.getDriver());
+     ls.driverGet("https://qa-gm3.quaspareparts.com/");
+    //String URL = ConfigReader.getProperty("URL").replaceAll(" ","");
+    //ls.driverGet(URL);
+     ls.clickLogin();
+     String email = ConfigReader.getProperty("email").replaceAll(" ","");
+     String password = ConfigReader.getProperty("password").replaceAll(" ","");
+     ls.typeUsername(email);
+     ls.typePassword(password);
+     ls.clickSubBtn();
+
+
+
+
     }
 
     @After(order = 1)

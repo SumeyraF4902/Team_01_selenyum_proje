@@ -1,6 +1,7 @@
 Feature: US_0010 Remote Units Modulu Duzenleme ve Silme Testi
 
-  Background: Kullanici her senaryodan once Remote Units e gelir
+  Background:
+    Given Kullanici Account Management sayfasindadir
     When Kullanici Remote Units butonuna tiklar
     Then Kullanıcı Remote Unitsleri sayfada goruntuledigini dogrular
 
