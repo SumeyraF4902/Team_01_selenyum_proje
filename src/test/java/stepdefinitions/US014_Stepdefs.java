@@ -9,7 +9,7 @@ public class US014_Stepdefs {
     TeamsPage tp = new TeamsPage(Driver.getDriver());
     @And("Kullanici ilk secilebilen takima tiklar")
     public void kullaniciIlkSecilebilenTakimaTiklar() {
-    tp.clickFistTeam();
+    tp.clickFirstTeam();
     }
     @And("Kullanici sayfada sag ustte bulunan Edit Team butonuna tiklar")
     public void kullaniciSayfadaSagUstteBulunanEditTeamButonunaTiklar() {
@@ -25,7 +25,7 @@ public class US014_Stepdefs {
     }
     @Then("Kullanici takim bilgilerinde degisiklik oldugunu dogrular")
     public void kullaniciTakimBilgilerindeDegisiklikOldugunuDogrular() {
-
+    tp.editTeamAssertion();
     }
     @When("Kullanici sayfada sol altta bulunan Delete Department butonuna tiklar")
     public void kullaniciSayfadaSolAlttaBulunanDeleteDepartmentButonunaTiklar() {

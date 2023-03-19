@@ -13,15 +13,16 @@ public class US013_Stepdefs {
     }
     @Then("Kullanici takimlari liste halinde sayfada gorundugunu dogrular")
     public void kullaniciTakimlariListeHalindeSayfadaGorundugunuDogrular() {
-
+    tp.showTeamList();
+    tp.listAssertion();
     }
     @When("Kullanici ilk secebildigi takima tiklar")
     public void kullaniciIlkSecebildigiTakimaTiklar() {
-    tp.clickFistTeam();
+    tp.clickFirstTeam();
     }
     @Then("Kullanici tikladigi takimin bilgilerinin detayli olarak sayfada gorundugunu dogrular")
     public void kullaniciTikladigiTakiminBilgilerininDetayliOlarakSayfadaGorundugunuDogrular() {
-
+    tp.teamInfoAssertion();
     }
     @When("Kullanici sayfada sag ustte bulunan Add New Team butonuna tiklar")
     public void kullaniciSayfadaSagUstteBulunanAddNewTeamButonunaTiklar() {
@@ -41,6 +42,6 @@ public class US013_Stepdefs {
     }
     @Then("Kullanici ekledigi takimin Teams sayfasinda bulundugunu dogrular")
     public void kullaniciEkledigiTakiminTeamsSayfasindaBulundugunuDogrular() {
-
+    tp.newTeamListAssertion();
     }
 }
