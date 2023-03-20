@@ -9,7 +9,7 @@ import org.junit.runner.RunWith;
         features = {"src/test/resources/features/US014.feature"},
         glue = {"US014_Stepdefs", "hooks"},
         plugin = {"pretty"},
-        monochrome = true
+        tags = "@FirstHooks"
         )
 public class US014_Runner {
 
