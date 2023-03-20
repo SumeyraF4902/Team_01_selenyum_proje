@@ -1,5 +1,91 @@
 package pages;
 
+import org.junit.Assert;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+import java.util.List;
 public class TeamsPage {
-
+    WebDriver driver;
+    public TeamsPage(WebDriver driver) {
+        this.driver = driver;
+        PageFactory.initElements(driver,this);
+    }
+    @FindBy(linkText = "Teams")
+    WebElement teamsButton;
+    @FindBy(xpath = "//div[@class='col-9']//a")
+    public List<WebElement> teamsList;
+    @FindBy(xpath = "//span[@class='fw-bold fs-4']")
+    WebElement teamDetay;
+    @FindBy(xpath = "//div[@class='row mt-2 mb-2']")
+    WebElement department;
+    @FindBy(xpath = "//button[@class='btn btn-info float-end text-white']")
+    WebElement addNewAndEditTeamButton;
+    @FindBy(xpath = "//div[@class='col-md-10']")
+    WebElement newTeamDetay;
+    @FindBy(xpath = "//input[@id='name']")
+    WebElement inputTeam;
+    @FindBy(xpath = "//div[@class='btn btn-danger text-light fw-bold']")
+    WebElement deleteTeamButton;
+    @FindBy(xpath = "//button[text()='Save']")
+    WebElement saveTeamButton;
+    public void acceptAlert(){
+        driver.switchTo().alert().accept();
+    }
+    public void addNewAndEditTeam(){
+    addNewAndEditTeamButton.click();
+    }
+    public void saveTeam(){
+        saveTeamButton.click();
+    }
+    public void deleteTeam(){
+        deleteTeamButton.click();
+    }
+    public void teamsPage(){
+        teamsButton.click();
+    }
+    public void inputInfo(){
+    Actions act = new Actions(driver);
+    act.moveToElement(inputTeam).click().sendKeys("Team0001"+ Keys.TAB).sendKeys("Team0001"+Keys.TAB+Keys.ARROW_DOWN
+            +Keys.ARROW_DOWN+Keys.ARROW_DOWN+Keys.ENTER+Keys.TAB)
+            .sendKeys("Team0001"+Keys.TAB+Keys.ARROW_DOWN+Keys.ENTER+Keys.ESCAPE).perform();
+    }
+    public void showTeamList(){
+        for (WebElement teamName : teamsList) {
+            if (teamName.getText().length() > 0){
+                System.out.println(teamName.getText());
+            }
+        }
+    }
+    public void clickFirstTeam(){
+        for (WebElement teamName : teamsList) {
+            if (teamName.getText().length() > 0){
+                String FirstCilckableTeamName = teamName.getText();
+                System.out.println("FirstCilckableTeamName= "+FirstCilckableTeamName);
+                teamName.click();
+                break;
+            }
+        }
+    }
+    public void listAssertion(){
+        Assert.assertTrue(teamsList.size() > 0);
+    }
+    public void teamInfoAssertion(){
+        Assert.assertTrue(department.getText().toLowerCase().contains("department"));
+    }
+    public void newTeamListAssertion(){
+        for (WebElement teamName : teamsList) {
+            if (teamName.getText().length() > 0){
+                System.out.println(teamName.getText());
+                Assert.assertTrue(teamName.getText().contains("Team0001"));
+                break;
+            }
+        }
+    }
+    public void editTeamAssertion(){
+        Assert.assertTrue(newTeamDetay.getText().contains("Team0001"));
+    }
 }
