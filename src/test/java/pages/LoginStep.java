@@ -44,6 +44,15 @@ public class LoginStep {
     @FindBy(xpath = "//h5[@class]")
     public WebElement Authorized;
 
+    @FindBy(xpath = "//div//a//img[@class]")
+    public WebElement logo;
+
+    @FindBy(id = "divCollapseUncollapse")
+    public WebElement hamburger;
+
+    @FindBy(linkText = "Dashboard")
+    public WebElement hamburger_check;
+
 
 
 
@@ -72,6 +81,9 @@ public class LoginStep {
 
     public void clickAccount_mng() {
         login_Account_mng.click();
+    }
+    public void click(WebElement a){
+        a.click();
     }
 
 
