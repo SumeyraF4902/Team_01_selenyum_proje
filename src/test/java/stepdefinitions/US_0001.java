@@ -42,9 +42,8 @@ public class US_0001 {
     @When(": Kullanici credential'a uymayan e-mail adresi girer.")
     public void kullaniciCredentialAUymayanEMailAdresiGirer(List<String> items) {
 
-
-            String mail = "group1" + items.get(0) + "test";
-            ls.typeUsername(mail);
+        String mail = "group1" + items.get(0) + "test";
+        ls.typeUsername(mail);
 
         ls.typePassword(ls.get_Config("password"));
     }
@@ -61,7 +60,7 @@ public class US_0001 {
 
     @When(": Kullanici crendential içermeyen e-mail adresi girer.")
     public void kullaniciVeIşaretleriniKullanmadanEMailAdresiGirer() {
-        String mail= ls.get_Config("mail_notAuthorized");
+        String mail = ls.get_Config("mail_notAuthorized");
         ls.typeUsername(mail);
         ls.typePassword(ls.get_Config("password"));
     }
