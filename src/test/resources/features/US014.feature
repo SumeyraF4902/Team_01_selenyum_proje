@@ -1,5 +1,5 @@
 Feature: US014 Teams Modulu Degisiklik Testi
-
+@FirstHooks
   Background: Kullanici her senaryodan once Teams modulune gelir
     When Kullanici Teams butonuna tiklar
     And Kullanici ilk sıradaki takima tiklar
