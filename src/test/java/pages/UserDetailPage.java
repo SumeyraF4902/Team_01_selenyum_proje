@@ -216,7 +216,7 @@ public class UserDetailPage {
 
 
         //mail in ulasmasi icin bekleme süresi
-        //  Thread.sleep(2000);
+          Thread.sleep(2000);
         // 2. mail adresi sitesi icin olusturuldu
         //  driver.findElement(By.xpath("//a[text()=' Refresh']")).click();
         //  action.moveToElement(driver.findElement(By.linkText("A3M Email Verification"))).click().perform();
@@ -344,16 +344,18 @@ public class UserDetailPage {
         actualRoleSize = addedRoles.size();
         addRoleButton.click();
 
-        action.moveToElement(driver.findElement(By.xpath("//div[text()='Select Role']"))).click().perform();
-        driver.findElement(By.xpath("//div[contains(@id,'option')]")).click();
+        action.moveToElement(driver.findElement(By.cssSelector("div[class=' css-1xc3v61-indicatorContainer']"))).click().perform();
+        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//div[contains(@id,'option')]")))).click();
+
 
         saveRoleButton.click();
 
 
     }
 
-    public void isNewRoleAdded() throws InterruptedException {
-        Thread.sleep(2000);
+    public void isNewRoleAdded()  {
+        driver.navigate().refresh();
+       // Thread.sleep(2000);
         int actualRolSize = driver.findElements(By.xpath("//span[contains(@class,'roles')]")).size();
         Assert.assertEquals("Rol eklenmedi", actualRoleSize + 1, actualRolSize);
     }
