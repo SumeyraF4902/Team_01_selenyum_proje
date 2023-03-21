@@ -123,12 +123,10 @@ public class UserDetailPage {
         notVerifiedEmailsSize = (driver.findElements(By.cssSelector("path[fill='none']"))).size();
     }
 
-
     public void navigateToUserModul() {
 
         usersButton.click();
         verifiedEmailsAndNotVerifiedEmailsCount();
-
 
     }
 
@@ -150,7 +148,6 @@ public class UserDetailPage {
 
 
         driver.switchTo().window(mainPage);
-
 
         notVerifiedEmailsSize = notVerifiedEmails.size();
         verifiedEmailsSize = verifiedEmails.size();
@@ -233,26 +230,35 @@ public class UserDetailPage {
 
     }
 
-    public void isDefaultRolePassiv() {
-        Assert.assertFalse("Default Role Enabled durumdadir", defaultRoleButton.isEnabled());
+    public void isDefaultRolePassiv() throws InterruptedException {
+
+        List<WebElement> aktifRol = driver.findElements(By.cssSelector(".active-roles-box svg"));
+        wait.until(ExpectedConditions.visibilityOf(aktifRol.get(0)));
+        boolean flag = false;
+        System.out.println("aktifRol.size() = " + aktifRol.size());
+        for(int i = 0; i<aktifRol.size(); i++){
+            if(aktifRol.get(i).getAttribute("class").contains("text-danger")){
+                System.out.println("aktifRol.get(i).getAttribute(\"class\") = " + aktifRol.get(i).getAttribute("class"));
+                flag = true;
+                break;
+            }
+
+        }
+        Assert.assertFalse("Default Role Enabled durumdadir", flag);
     }
 
     public void isMailAddressPassiv() {
-        sa.assertFalse(email.isEnabled());
+        sa.assertTrue(email.getAttribute("type") == null);
         sa.assertAll("Mail adresi pasif degil");
 
     }
 
     public void isUsernameBlankable() {
-
-
         sa.assertEquals(alertMessage.getText(),"Username cannot be empty");
-
     }
 
     public void saveEdit() {
         saveEditButton.click();
-
     }
 
     public void enterUsernameWithNumber() {
@@ -262,7 +268,6 @@ public class UserDetailPage {
     }
 
     public void enterUsernameWithSpecialCharacter() {
-
         userName.clear();
         List<String> characters = new ArrayList<>(Arrays.asList("!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "+", "{", "}", ":", "<", ">", "?", "=", "[", "]", ";", "'", ",", "/"));
         Random random = new Random();
@@ -275,15 +280,11 @@ public class UserDetailPage {
     }
 
     public void isUsernameEditableWithSpecialCharacters() {
-
         sa.assertEquals("Username may contain letters (A-Za-z), numbers (0-9), and special characters of -._", alertMessage.getText());
-
-
     }
 
     public void renameUsernameWithValidUsername() {
         userName.clear();
-
         username = faker.name().username();
         userName.sendKeys(username);
 
@@ -291,7 +292,6 @@ public class UserDetailPage {
 
     public void isEditSuccessfull() {
         wait.until((ExpectedConditions.visibilityOf(saveAlertMessage)));
-
         Assert.assertEquals("Kullanici bilgileri güncellenemedi", "User information updated successfully", saveAlertMessage.getText());
     }
 
@@ -300,7 +300,6 @@ public class UserDetailPage {
         for (WebElement value : userCell) {
             userList.add(value.getText());
         }
-
         Assert.assertTrue(userList.contains(username));
     }
 
@@ -318,7 +317,6 @@ public class UserDetailPage {
         actualRoleSize = addedRoles.size();
         addRoleButton.click();
 
-
         action.moveToElement(driver.findElement(By.xpath("//div[text()='Select Role']"))).click().perform();
         driver.findElement(By.xpath("//div[contains(@id,'option')]")).click();
 
@@ -330,21 +328,11 @@ public class UserDetailPage {
     public void isNewRoleAdded() throws InterruptedException {
         Thread.sleep(2000);
         int actualRolSize = driver.findElements(By.xpath("//span[contains(@class,'roles')]")).size();
-
         Assert.assertEquals("Rol eklenmedi", actualRoleSize + 1, actualRolSize);
     }
 
     public void addBlankUsername() {
-        WebElement userName = driver.findElement(By.id("username"));
-        wait.until(ExpectedConditions.elementToBeClickable(userName));
-        System.out.println("userName.getAttribute(\"value\") = " + userName.getAttribute("value"));
-        userName.clear();
-     //   action.moveToElement(userName).click().perform();
-     //  userName.sendKeys("deneme");
-     //  userName.clear();
-        //userName.sendKeys("");
-        System.out.println("userName.getAttribute(\"value\") = " + userName.getAttribute("value"));
-
+        action.click(userName).sendKeys(Keys.CONTROL,"a",Keys.BACK_SPACE).perform();
     }
 
     public void isUsernameEditableWithNumbers() {
@@ -353,8 +341,8 @@ public class UserDetailPage {
 
     public void saveEditable() {
         saveEditButton.click();
-        wait.until(ExpectedConditions.visibilityOf(saveAlertMessage));
-        sa.assertFalse(saveAlertMessage.isDisplayed());
+        List<WebElement> saveButton = driver.findElements(By.xpath("//p[text()='User information updated successfully']"));
+        sa.assertFalse(saveButton.size()==1);
         sa.assertAll("Kullanici invalid Username olusturabilmektedir");
     }
 
