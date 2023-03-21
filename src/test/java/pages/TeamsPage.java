@@ -24,17 +24,17 @@ public class TeamsPage {
     public List<WebElement> teamsList;
     @FindBy(xpath = "(//div[@class='col-9']//a)[15]")
     WebElement aTeam;
-    @FindBy(xpath = "//span[@class='fw-bold fs-4']")
+    @FindBy(xpath = "//span[.='team007']")
     WebElement teamDetay;
     @FindBy(xpath = "//div[@class='row mt-2 mb-2']")
     WebElement department;
     @FindBy(xpath = "//button[@class='btn btn-info float-end text-white']")
     WebElement addNewAndEditTeamButton;
-    @FindBy(xpath = "//div[@class='col-md-10']")
+    @FindBy(xpath = "//label[@id='name']")
     WebElement newTeamDetay;
     @FindBy(xpath = "//input[@id='name']")
     WebElement inputTeam;
-    @FindBy(xpath = "//div[@class='btn btn-danger text-light fw-bold']")
+    @FindBy(xpath = "//button[@class='btn btn-danger text-light fw-bold']")
     WebElement deleteTeamButton;
     @FindBy(xpath = "//button[text()='Save']")
     WebElement saveTeamButton;
@@ -48,20 +48,24 @@ public class TeamsPage {
     }
     public void saveTeam(){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(18));
-        wait.until(ExpectedConditions.visibilityOf(saveTeamButton));
+        wait.until(ExpectedConditions.elementToBeClickable(saveTeamButton));
         saveTeamButton.click();
     }
     public void deleteTeam(){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(18));
+        wait.until(ExpectedConditions.elementToBeClickable(deleteTeamButton));
         deleteTeamButton.click();
     }
     public void teamsPage(){
         teamsButton.click();
     }
     public void inputInfo(){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(18));
+        wait.until(ExpectedConditions.visibilityOf(teamDetay));
     Actions act = new Actions(driver);
-    act.moveToElement(inputTeam).click().sendKeys("Team0001"+ Keys.TAB).sendKeys("Team0001"+Keys.TAB+Keys.ARROW_DOWN
-            +Keys.ARROW_DOWN+Keys.ARROW_DOWN+Keys.ENTER+Keys.TAB)
-            .sendKeys("Team0001"+Keys.TAB+Keys.ARROW_DOWN+Keys.ENTER+Keys.ESCAPE).perform();
+    act.moveToElement(inputTeam).click().sendKeys(Keys.BACK_SPACE+"Team0001"+ Keys.TAB).sendKeys("Team0001"+Keys.TAB)
+            .sendKeys("Team"+Keys.ENTER+Keys.TAB).sendKeys("Team0001"+Keys.TAB)
+            .sendKeys("Business"+Keys.ENTER+Keys.ESCAPE+Keys.TAB+Keys.ENTER).perform();
     }
     public void showTeamList(){
         for (WebElement teamName : teamsList) {
@@ -98,14 +102,18 @@ public class TeamsPage {
         }
     }
     public void editTeamAssertion(){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(18));
+        wait.until(ExpectedConditions.visibilityOf(newTeamDetay));
+        System.out.println(newTeamDetay.getText());
         Assert.assertTrue(newTeamDetay.getText().contains("Team0001"));
     }
     public void deleteTeamAssertion(){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(18));
+        wait.until(ExpectedConditions.visibilityOfAllElements(teamsList));
         for (WebElement teamName : teamsList) {
             if (teamName.getText().length() > 0){
                 System.out.println(teamName.getText());
-                Assert.assertTrue(!teamName.getText().contains("Team0001"));
-                break;
+                Assert.assertTrue(!teamName.getText().contains(FirstCilckableTeamName));
             }
         }
     }

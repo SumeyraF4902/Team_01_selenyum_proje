@@ -34,7 +34,6 @@ public class US013_Stepdefs {
     }
     @And("Kullanici sayfada sag altta bulunan Save butonuna tiklar")
     public void kullaniciSayfadaSagAlttaBulunanSaveButonunaTiklar() {
-    tp.saveTeam();
     }
     @And("Kullanici sayfada sol ortada bulunan Teams butonuna tekrar tiklar")
     public void kullaniciSayfadaSolOrtadaBulunanTeamsButonunaTekrarTiklar() {

@@ -8,9 +8,10 @@ import org.junit.runner.RunWith;
 
 @CucumberOptions(
         features = {"src/test/resources/features/US_0012.feature"},
-        glue = {"US_0012_StepDefinitions", "Hooks"},
+        glue = {"stepdefinitions", "Hooks"},
         plugin = {"pretty"},
-        monochrome = true
+        monochrome = true,
+        tags = "@FirstHooks"
 )
 
 
