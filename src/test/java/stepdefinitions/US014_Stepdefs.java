@@ -21,7 +21,6 @@ public class US014_Stepdefs {
     }
     @And("Kullanici sayfanin sag altinda bulunan Save butonuna tiklar")
     public void kullaniciSayfaninSagAltindaBulunanSaveButonunaTiklar() {
-    tp.saveTeam();
     }
     @Then("Kullanici takim bilgilerinde degisiklik oldugunu dogrular")
     public void kullaniciTakimBilgilerindeDegisiklikOldugunuDogrular() {
