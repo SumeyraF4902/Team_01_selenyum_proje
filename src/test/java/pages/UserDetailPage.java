@@ -33,6 +33,8 @@ public class UserDetailPage {
     static private int verifiedEmailsSize;
     static private String mailAdress;
     static private List<String> userList = new ArrayList<>();
+    private List<String> characters = new ArrayList<>(Arrays.asList("!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "+", "{", "}", ":", "<", ">", "?", "=", "[", "]", ";", "'", ",", "/"));
+
     static private String mainPage;
     static private String username = "";
     static private int actualRoleSize;
@@ -116,11 +118,17 @@ public class UserDetailPage {
     @FindBy(xpath = "//table//tbody//td[2]/a")
     private List<WebElement> userCell;
 
+    @FindBy(xpath = "//table//tbody")
+    private WebElement tableBody;
+
 
     public void verifiedEmailsAndNotVerifiedEmailsCount() {
 
-        verifiedEmailsSize = (driver.findElements(By.cssSelector("path[fill='#08875D']"))).size();
-        notVerifiedEmailsSize = (driver.findElements(By.cssSelector("path[fill='none']"))).size();
+        //verifiedEmailsSize = driver.findElements(By.cssSelector("path[fill='#08875D']")).size();
+
+        //notVerifiedEmailsSize = = driver.findElements(By.cssSelector("path[fill='none']")).size();
+        verifiedEmailsSize = verifiedEmails.size();
+        notVerifiedEmailsSize = notVerifiedEmails.size();
     }
 
     public void navigateToUserModul() {
@@ -136,21 +144,37 @@ public class UserDetailPage {
         mainPage = driver.getWindowHandle();
         driver.switchTo().newWindow(WindowType.TAB);
 
+        // 2. temp mail adresi icin olusturuldu
+        //  driver.get("https://www.tmail.gg/en");
+        //  WebElement copyEmail = driver.findElement(By.cssSelector(".custom-email-botton"));
+        //  wait.until(ExpectedConditions.attributeToBe(copyEmail, "disabled", null));
+        //  copyEmail.click();
+        //  mailAdress = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
+
         driver.get("https://tempmailo.com/");
-        driver.findElement(By.cssSelector(".iconx")).click();
+
+        WebElement copyMail = driver.findElement(By.cssSelector(".iconx"));
+        WebElement changeMail = driver.findElement(By.xpath("//span[text()='Change']"));
+        WebElement alertMessage = driver.findElement(By.xpath("//button[contains(text(),'Ok')]"));
+
+        copyMail.click();
         mailAdress = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
         while (mailAdress.contains(".biz") || mailAdress.contains(".live")) {
-            driver.findElement(By.xpath("//span[text()='Change']")).click();
-            driver.findElement(By.xpath("//button[contains(text(),'Ok')]")).click();
-            driver.findElement(By.cssSelector(".iconx")).click();
+            changeMail.click();
+            alertMessage.click();
+            copyMail.click();
+            // driver.findElement(By.xpath("//span[text()='Change']")).click();
+            // driver.findElement(By.xpath("//button[contains(text(),'Ok')]")).click();
+            // driver.findElement(By.cssSelector(".iconx")).click();
             mailAdress = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
         }
 
 
         driver.switchTo().window(mainPage);
 
-        notVerifiedEmailsSize = notVerifiedEmails.size();
-        verifiedEmailsSize = verifiedEmails.size();
+
+        // notVerifiedEmailsSize = notVerifiedEmails.size();
+        // verifiedEmailsSize = verifiedEmails.size();
 
         newUserRegistrationButton.click();
         selectRoleButton.click();
@@ -168,7 +192,7 @@ public class UserDetailPage {
 
     public boolean isNewlyAddedUserDisplayed() {
         navigateToUserModul();
-        String body = driver.findElement(By.xpath("//table//tbody")).getText();
+        String body = tableBody.getText();
         return body.contains(mailAdress);
 
     }
@@ -190,11 +214,16 @@ public class UserDetailPage {
                 break;
         }
 
+
         //mail in ulasmasi icin bekleme süresi
-        Thread.sleep(2000);
+        //  Thread.sleep(2000);
+        // 2. mail adresi sitesi icin olusturuldu
+        //  driver.findElement(By.xpath("//a[text()=' Refresh']")).click();
+        //  action.moveToElement(driver.findElement(By.linkText("A3M Email Verification"))).click().perform();
+        //  driver.switchTo().frame("myIframe");
+        //  action.moveToElement(driver.findElement(By.linkText("Click to verify your email"))).click().perform();
 
         driver.findElement(By.cssSelector(".prim-btn")).click();
-
 
         wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//div[text()='A3M Email Verification']"))));
         action.moveToElement(driver.findElement(By.xpath("//div[text()='A3M Email Verification']"))).click().perform();
@@ -230,15 +259,14 @@ public class UserDetailPage {
 
     }
 
-    public void isDefaultRolePassiv(){
+    public void isDefaultRolePassiv() {
 
         List<WebElement> aktifRol = driver.findElements(By.cssSelector(".active-roles-box svg"));
         wait.until(ExpectedConditions.visibilityOf(aktifRol.get(0)));
         boolean flag = false;
         System.out.println("aktifRol.size() = " + aktifRol.size());
-        for(int i = 0; i<aktifRol.size(); i++){
-            if(aktifRol.get(i).getAttribute("class").contains("text-danger")){
-                System.out.println("aktifRol.get(i).getAttribute(\"class\") = " + aktifRol.get(i).getAttribute("class"));
+        for (int i = 0; i < aktifRol.size(); i++) {
+            if (aktifRol.get(i).getAttribute("class").contains("text-danger")) {
                 flag = true;
                 break;
             }
@@ -254,7 +282,7 @@ public class UserDetailPage {
     }
 
     public void isUsernameBlankable() {
-        sa.assertEquals(alertMessage.getText(),"Username cannot be empty");
+        sa.assertEquals(alertMessage.getText(), "Username cannot be empty");
     }
 
     public void saveEdit() {
@@ -269,7 +297,6 @@ public class UserDetailPage {
 
     public void enterUsernameWithSpecialCharacter() {
         userName.clear();
-        List<String> characters = new ArrayList<>(Arrays.asList("!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "+", "{", "}", ":", "<", ">", "?", "=", "[", "]", ";", "'", ",", "/"));
         Random random = new Random();
         for (int i = 0; i < 5; i++) {
             int number = random.nextInt(characters.size() - 1);
@@ -325,14 +352,14 @@ public class UserDetailPage {
 
     }
 
-    public void isNewRoleAdded(){
-
+    public void isNewRoleAdded() throws InterruptedException {
+        Thread.sleep(2000);
         int actualRolSize = driver.findElements(By.xpath("//span[contains(@class,'roles')]")).size();
         Assert.assertEquals("Rol eklenmedi", actualRoleSize + 1, actualRolSize);
     }
 
     public void addBlankUsername() {
-        action.click(userName).sendKeys(Keys.CONTROL,"a",Keys.BACK_SPACE).perform();
+        action.click(userName).sendKeys(Keys.CONTROL, "a", Keys.BACK_SPACE).perform();
     }
 
     public void isUsernameEditableWithNumbers() {
@@ -342,7 +369,7 @@ public class UserDetailPage {
     public void saveEditable() {
         saveEditButton.click();
         List<WebElement> saveButton = driver.findElements(By.xpath("//p[text()='User information updated successfully']"));
-        sa.assertFalse(saveButton.size()==1);
+        sa.assertFalse(saveButton.size() == 1);
         sa.assertAll("Kullanici invalid Username olusturabilmektedir");
     }
 
