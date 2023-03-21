@@ -230,7 +230,7 @@ public class UserDetailPage {
 
     }
 
-    public void isDefaultRolePassiv() throws InterruptedException {
+    public void isDefaultRolePassiv(){
 
         List<WebElement> aktifRol = driver.findElements(By.cssSelector(".active-roles-box svg"));
         wait.until(ExpectedConditions.visibilityOf(aktifRol.get(0)));
@@ -325,8 +325,8 @@ public class UserDetailPage {
 
     }
 
-    public void isNewRoleAdded() throws InterruptedException {
-        Thread.sleep(2000);
+    public void isNewRoleAdded(){
+
         int actualRolSize = driver.findElements(By.xpath("//span[contains(@class,'roles')]")).size();
         Assert.assertEquals("Rol eklenmedi", actualRoleSize + 1, actualRolSize);
     }
