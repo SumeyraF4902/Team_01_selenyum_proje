@@ -10,15 +10,12 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.asserts.SoftAssert;
-import utilities.ConfigReader;
 import utilities.Driver;
 
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.time.Duration;
 
 import java.util.*;
@@ -35,9 +32,9 @@ public class UserDetailPage {
     static private int notVerifiedEmailsSize;
     static private int verifiedEmailsSize;
     static private String mailAdress;
-    static private List<String> mailList;
+    static private List<String> userList = new ArrayList<>();
     static private String mainPage;
-    static private String username;
+    static private String username = "";
     static private int actualRoleSize;
 
     public UserDetailPage() {
@@ -90,7 +87,7 @@ public class UserDetailPage {
     @FindBy(xpath = "//button[text()='+ New User Registration']")
     private WebElement newUserRegistrationButton;
 
-    @FindBy(id = "react-select-2-input")
+    @FindBy(xpath = "//input[@role='combobox']")
     private WebElement selectRoleButton;
 
     @FindBy(xpath = "//button[text()='Register']")
@@ -116,6 +113,8 @@ public class UserDetailPage {
     @FindBy(xpath = "//button[text()='Confirm']")
     private WebElement resetPasswordConfirmButton;
 
+    @FindBy(xpath = "//table//tbody//td[2]/a")
+    private List<WebElement> userCell;
 
 
     public void verifiedEmailsAndNotVerifiedEmailsCount() {
@@ -124,16 +123,14 @@ public class UserDetailPage {
         notVerifiedEmailsSize = (driver.findElements(By.cssSelector("path[fill='none']"))).size();
     }
 
-
     public void navigateToUserModul() {
 
         usersButton.click();
         verifiedEmailsAndNotVerifiedEmailsCount();
 
-
     }
 
-    public void addNewUser() throws AWTException, IOException, UnsupportedFlavorException {
+    public void addNewUser() throws IOException, UnsupportedFlavorException {
 
 
         mainPage = driver.getWindowHandle();
@@ -152,7 +149,6 @@ public class UserDetailPage {
 
         driver.switchTo().window(mainPage);
 
-
         notVerifiedEmailsSize = notVerifiedEmails.size();
         verifiedEmailsSize = verifiedEmails.size();
 
@@ -160,16 +156,11 @@ public class UserDetailPage {
         selectRoleButton.click();
         selectRoleButton.sendKeys("Store Manager" + Keys.ENTER);
 
-        email.click();
-        Robot rbt = new Robot();
-        rbt.keyPress(KeyEvent.VK_CONTROL);
-        rbt.keyPress(KeyEvent.VK_V);
-        rbt.keyRelease(KeyEvent.VK_V);
-        rbt.keyRelease(KeyEvent.VK_CONTROL);
+        email.sendKeys(mailAdress);
+
 
         registerButton.click();
         registerWindowCloseButton.click();
-        driver.navigate().refresh();
 
 
     }
@@ -190,7 +181,7 @@ public class UserDetailPage {
 
     }
 
-    public void verifyEmail() {
+    public void verifyEmail() throws InterruptedException {
 
         Set<String> windowsHandles = driver.getWindowHandles();
         for (String value : windowsHandles) {
@@ -199,15 +190,18 @@ public class UserDetailPage {
                 break;
         }
 
+        //mail in ulasmasi icin bekleme süresi
+        Thread.sleep(2000);
 
         driver.findElement(By.cssSelector(".prim-btn")).click();
 
-        WebElement emailClick = driver.findElement(By.xpath("//div[text()='A3M Email Verification']"));
-        wait.until(ExpectedConditions.visibilityOf(emailClick));
-        action.moveToElement(emailClick).click().perform();
+
+        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//div[text()='A3M Email Verification']"))));
+        action.moveToElement(driver.findElement(By.xpath("//div[text()='A3M Email Verification']"))).click().perform();
         action.sendKeys(Keys.PAGE_DOWN).perform();
         driver.switchTo().frame("fullmessage");
         driver.findElement(By.linkText("Click to verify your email")).click();
+        driver.switchTo().window(mainPage);
     }
 
     public boolean IsUserNotVerified() {
@@ -219,10 +213,11 @@ public class UserDetailPage {
     }
 
     public void selectUser() {
-
+        action.sendKeys(Keys.PAGE_DOWN).perform();
         for (WebElement value : users) {
             if (value.getText().length() > 1) {
                 wait.until(ExpectedConditions.elementToBeClickable(value));
+
                 action.moveToElement(value).click().perform();
                 break;
             }
@@ -235,25 +230,35 @@ public class UserDetailPage {
 
     }
 
-    public void isDefaultRolePassiv() {
-        Assert.assertFalse("Default Role Enabled durumdadir",defaultRoleButton.isEnabled());
+    public void isDefaultRolePassiv() throws InterruptedException {
+
+        List<WebElement> aktifRol = driver.findElements(By.cssSelector(".active-roles-box svg"));
+        wait.until(ExpectedConditions.visibilityOf(aktifRol.get(0)));
+        boolean flag = false;
+        System.out.println("aktifRol.size() = " + aktifRol.size());
+        for(int i = 0; i<aktifRol.size(); i++){
+            if(aktifRol.get(i).getAttribute("class").contains("text-danger")){
+                System.out.println("aktifRol.get(i).getAttribute(\"class\") = " + aktifRol.get(i).getAttribute("class"));
+                flag = true;
+                break;
+            }
+
+        }
+        Assert.assertFalse("Default Role Enabled durumdadir", flag);
     }
 
     public void isMailAddressPassiv() {
-        sa.assertFalse(email.isEnabled());
+        sa.assertTrue(email.getAttribute("type") == null);
         sa.assertAll("Mail adresi pasif degil");
 
     }
 
     public void isUsernameBlankable() {
-
-        Assert.assertEquals("Username cannot be empty", alertMessage.getText());
-
+        sa.assertEquals(alertMessage.getText(),"Username cannot be empty");
     }
 
     public void saveEdit() {
         saveEditButton.click();
-
     }
 
     public void enterUsernameWithNumber() {
@@ -263,25 +268,23 @@ public class UserDetailPage {
     }
 
     public void enterUsernameWithSpecialCharacter() {
-
         userName.clear();
         List<String> characters = new ArrayList<>(Arrays.asList("!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "+", "{", "}", ":", "<", ">", "?", "=", "[", "]", ";", "'", ",", "/"));
         Random random = new Random();
-        int number = random.nextInt(characters.size() - 1);
-        userName.sendKeys(characters.get(number));
+        for (int i = 0; i < 5; i++) {
+            int number = random.nextInt(characters.size() - 1);
+            username += characters.get(number);
+        }
+        userName.sendKeys(username);
 
     }
 
     public void isUsernameEditableWithSpecialCharacters() {
-
         sa.assertEquals("Username may contain letters (A-Za-z), numbers (0-9), and special characters of -._", alertMessage.getText());
-        sa.assertAll();
-
     }
 
     public void renameUsernameWithValidUsername() {
         userName.clear();
-
         username = faker.name().username();
         userName.sendKeys(username);
 
@@ -289,15 +292,15 @@ public class UserDetailPage {
 
     public void isEditSuccessfull() {
         wait.until((ExpectedConditions.visibilityOf(saveAlertMessage)));
-
-        Assert.assertEquals("uyari mesaji görüntülenemedi", "User information updated successfully", saveAlertMessage.getText());
+        Assert.assertEquals("Kullanici bilgileri güncellenemedi", "User information updated successfully", saveAlertMessage.getText());
     }
 
     public void isEditedUserDisplayed() {
         usersButton.click();
-        driver.navigate().refresh();
-
-        Assert.assertTrue(driver.findElement(By.xpath("//table//tbody")).toString().contains(username));
+        for (WebElement value : userCell) {
+            userList.add(value.getText());
+        }
+        Assert.assertTrue(userList.contains(username));
     }
 
     public void resetPassword() {
@@ -310,17 +313,13 @@ public class UserDetailPage {
 
     }
 
-    public void addNewRoleToUser() throws InterruptedException {
+    public void addNewRoleToUser() {
         actualRoleSize = addedRoles.size();
         addRoleButton.click();
 
-
         action.moveToElement(driver.findElement(By.xpath("//div[text()='Select Role']"))).click().perform();
-        //  action.moveToElement(driver.findElement(By.xpath("//input[@aria-expanded='false']"))).click().perform();
         driver.findElement(By.xpath("//div[contains(@id,'option')]")).click();
 
-       //WebElement roller = driver.findElement(By.cssSelector("div[class=' css-1xc3v61-indicatorContainer']"));
-       //action.moveToElement(roller).click().sendKeys(Keys.DOWN).sendKeys(Keys.ENTER).perform();
         saveRoleButton.click();
 
 
@@ -329,23 +328,23 @@ public class UserDetailPage {
     public void isNewRoleAdded() throws InterruptedException {
         Thread.sleep(2000);
         int actualRolSize = driver.findElements(By.xpath("//span[contains(@class,'roles')]")).size();
-
         Assert.assertEquals("Rol eklenmedi", actualRoleSize + 1, actualRolSize);
     }
 
     public void addBlankUsername() {
-        action.moveToElement(userName).click().perform();
-        userName.clear();
-        userName.sendKeys("");
+        action.click(userName).sendKeys(Keys.CONTROL,"a",Keys.BACK_SPACE).perform();
     }
 
     public void isUsernameEditableWithNumbers() {
-        SoftAssert sa = new SoftAssert();
-       // sa.assertTrue();
+        sa.assertTrue(alertMessage.isDisplayed());
     }
 
     public void saveEditable() {
-        sa.assertFalse(saveEditButton.isEnabled());
+        saveEditButton.click();
+        List<WebElement> saveButton = driver.findElements(By.xpath("//p[text()='User information updated successfully']"));
+        sa.assertFalse(saveButton.size()==1);
         sa.assertAll("Kullanici invalid Username olusturabilmektedir");
     }
+
+
 }
