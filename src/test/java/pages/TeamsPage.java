@@ -7,8 +7,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import java.time.Duration;
 import java.util.List;
 public class TeamsPage {
+    String FirstCilckableTeamName;
     WebDriver driver;
     public TeamsPage(WebDriver driver) {
         this.driver = driver;
@@ -18,6 +22,8 @@ public class TeamsPage {
     WebElement teamsButton;
     @FindBy(xpath = "//div[@class='col-9']//a")
     public List<WebElement> teamsList;
+    @FindBy(xpath = "(//div[@class='col-9']//a)[15]")
+    WebElement aTeam;
     @FindBy(xpath = "//span[@class='fw-bold fs-4']")
     WebElement teamDetay;
     @FindBy(xpath = "//div[@class='row mt-2 mb-2']")
@@ -35,10 +41,14 @@ public class TeamsPage {
     public void acceptAlert(){
         driver.switchTo().alert().accept();
     }
-    public void addNewAndEditTeam(){
+    public void addNewAndEditTeam() {
+    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(18));
+    wait.until(ExpectedConditions.visibilityOf(addNewAndEditTeamButton));
     addNewAndEditTeamButton.click();
     }
     public void saveTeam(){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(18));
+        wait.until(ExpectedConditions.visibilityOf(saveTeamButton));
         saveTeamButton.click();
     }
     public void deleteTeam(){
@@ -63,7 +73,7 @@ public class TeamsPage {
     public void clickFirstTeam(){
         for (WebElement teamName : teamsList) {
             if (teamName.getText().length() > 0){
-                String FirstCilckableTeamName = teamName.getText();
+                FirstCilckableTeamName = teamName.getText();
                 System.out.println("FirstCilckableTeamName= "+FirstCilckableTeamName);
                 teamName.click();
                 break;
@@ -77,9 +87,11 @@ public class TeamsPage {
         Assert.assertTrue(department.getText().toLowerCase().contains("department"));
     }
     public void newTeamListAssertion(){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(18));
+        wait.until(ExpectedConditions.visibilityOf(aTeam));
         for (WebElement teamName : teamsList) {
             if (teamName.getText().length() > 0){
-                System.out.println(teamName.getText());
+                System.out.println("New Team Name= " +teamName.getText());
                 Assert.assertTrue(teamName.getText().contains("Team0001"));
                 break;
             }
@@ -87,5 +99,14 @@ public class TeamsPage {
     }
     public void editTeamAssertion(){
         Assert.assertTrue(newTeamDetay.getText().contains("Team0001"));
+    }
+    public void deleteTeamAssertion(){
+        for (WebElement teamName : teamsList) {
+            if (teamName.getText().length() > 0){
+                System.out.println(teamName.getText());
+                Assert.assertTrue(!teamName.getText().contains("Team0001"));
+                break;
+            }
+        }
     }
 }

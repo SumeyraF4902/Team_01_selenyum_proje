@@ -12,7 +12,7 @@ public class US014_Stepdefs {
     tp.clickFirstTeam();
     }
     @And("Kullanici sayfada sag ustte bulunan Edit Team butonuna tiklar")
-    public void kullaniciSayfadaSagUstteBulunanEditTeamButonunaTiklar() {
+    public void kullaniciSayfadaSagUstteBulunanEditTeamButonunaTiklar(){
     tp.addNewAndEditTeam();
     }
     @When("Kullanici cikan takim bilgilerinde degisiklik yapar")
@@ -37,6 +37,6 @@ public class US014_Stepdefs {
     }
     @Then("Kullanici sildigi takimin sayfada artik bulunmadigini dogrular")
     public void kullaniciSildigiTakiminSayfadaArtikBulunmadiginiDogrular() {
-
+    tp.deleteTeamAssertion();
     }
 }
