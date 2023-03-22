@@ -8,8 +8,7 @@ Feature: US014 Teams Modulu Degisiklik Testi
 
   @FirstHooks
   Scenario: TC001 Kullanici Teams modulundeki takimlarin bilgilerinde degisiklik yapabilmeli
-    When Kullanici cikan takim bilgilerinde degisiklik yapar
-    And Kullanici sayfanin sag altinda bulunan Save butonuna tiklar
+    When Kullanici cıkan sayfadaki bosluklari doldurur ve Save butonuna tiklar
     Then Kullanici takim bilgilerinde degisiklik oldugunu dogrular
 
   @FirstHooks

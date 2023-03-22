@@ -20,12 +20,8 @@ public class TeamsPage {
     }
     @FindBy(linkText = "Teams")
     WebElement teamsButton;
-    @FindBy(xpath = "//div[@class='col-9']//a")
+    @FindBy(xpath = "//div[@class='col-9']//a//b")
     public List<WebElement> teamsList;
-    @FindBy(xpath = "(//div[@class='col-9']//a)[15]")
-    WebElement aTeam;
-    @FindBy(xpath = "//span[.='team007']")
-    WebElement teamDetay;
     @FindBy(xpath = "//div[@class='row mt-2 mb-2']")
     WebElement department;
     @FindBy(xpath = "//button[@class='btn btn-info float-end text-white']")
@@ -46,11 +42,6 @@ public class TeamsPage {
     wait.until(ExpectedConditions.visibilityOf(addNewAndEditTeamButton));
     addNewAndEditTeamButton.click();
     }
-    public void saveTeam(){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(18));
-        wait.until(ExpectedConditions.elementToBeClickable(saveTeamButton));
-        saveTeamButton.click();
-    }
     public void deleteTeam(){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(18));
         wait.until(ExpectedConditions.elementToBeClickable(deleteTeamButton));
@@ -60,8 +51,8 @@ public class TeamsPage {
         teamsButton.click();
     }
     public void inputInfo(){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(18));
-        wait.until(ExpectedConditions.visibilityOf(teamDetay));
+    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(18));
+        wait.withTimeout(Duration.ofSeconds(10));
     Actions act = new Actions(driver);
     act.moveToElement(inputTeam).click().sendKeys(Keys.BACK_SPACE+"Team0001"+ Keys.TAB).sendKeys("Team0001"+Keys.TAB)
             .sendKeys("Team"+Keys.ENTER+Keys.TAB).sendKeys("Team0001"+Keys.TAB)
@@ -92,14 +83,16 @@ public class TeamsPage {
     }
     public void newTeamListAssertion(){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(18));
-        wait.until(ExpectedConditions.visibilityOf(aTeam));
+        wait.withTimeout(Duration.ofSeconds(10));
+        System.out.println("Team Names= ");
+        String teams = " ";
         for (WebElement teamName : teamsList) {
             if (teamName.getText().length() > 0){
-                System.out.println("New Team Name= " +teamName.getText());
-                Assert.assertTrue(teamName.getText().contains("Team0001"));
-                break;
+                teams += teamName.getText();
             }
         }
+        System.out.println(teams);
+        Assert.assertTrue(teams.contains("Team0001"));
     }
     public void editTeamAssertion(){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(18));

@@ -15,13 +15,6 @@ public class US014_Stepdefs {
     public void kullaniciSayfadaSagUstteBulunanEditTeamButonunaTiklar(){
     tp.addNewAndEditTeam();
     }
-    @When("Kullanici cikan takim bilgilerinde degisiklik yapar")
-    public void kullaniciCikanTakimBilgilerindeDegisiklikYapar() {
-    tp.inputInfo();
-    }
-    @And("Kullanici sayfanin sag altinda bulunan Save butonuna tiklar")
-    public void kullaniciSayfaninSagAltindaBulunanSaveButonunaTiklar() {
-    }
     @Then("Kullanici takim bilgilerinde degisiklik oldugunu dogrular")
     public void kullaniciTakimBilgilerindeDegisiklikOldugunuDogrular() {
     tp.editTeamAssertion();

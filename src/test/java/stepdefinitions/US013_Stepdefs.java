@@ -28,13 +28,6 @@ public class US013_Stepdefs {
     public void kullaniciSayfadaSagUstteBulunanAddNewTeamButonunaTiklar() {
     tp.addNewAndEditTeam();
     }
-    @And("Kullanici cıkan sayfadaki bosluklari doldurur.")
-    public void kullaniciCıkanSayfadakiBosluklariDoldurur() {
-    tp.inputInfo();
-    }
-    @And("Kullanici sayfada sag altta bulunan Save butonuna tiklar")
-    public void kullaniciSayfadaSagAlttaBulunanSaveButonunaTiklar() {
-    }
     @And("Kullanici sayfada sol ortada bulunan Teams butonuna tekrar tiklar")
     public void kullaniciSayfadaSolOrtadaBulunanTeamsButonunaTekrarTiklar() {
     tp.teamsPage();
@@ -42,5 +35,9 @@ public class US013_Stepdefs {
     @Then("Kullanici ekledigi takimin Teams sayfasinda bulundugunu dogrular")
     public void kullaniciEkledigiTakiminTeamsSayfasindaBulundugunuDogrular() {
     tp.newTeamListAssertion();
+    }
+    @And("Kullanici cıkan sayfadaki bosluklari doldurur ve Save butonuna tiklar")
+    public void kullaniciCıkanSayfadakiBosluklariDoldururVeSaveButonunaTiklar() {
+        tp.inputInfo();
     }
 }
