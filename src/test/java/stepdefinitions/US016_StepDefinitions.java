@@ -21,7 +21,7 @@ public class US016_StepDefinitions {
     }
 
     @Then("Kullanici bilgilerinde Default Role ün pasif durumda oldugunu dogrular")
-    public void kullaniciBilgilerindeDefaultRoleÜnPasifDurumdaOldugunuDogrular() throws InterruptedException {
+    public void kullaniciBilgilerindeDefaultRoleÜnPasifDurumdaOldugunuDogrular(){
         userDetailPage.isDefaultRolePassiv();
     }
 
@@ -96,13 +96,13 @@ public class US016_StepDefinitions {
     }
 
     @When("Kullanici sectigi kullaniciya yeni bir rol atar")
-    public void kullaniciSectigiKullaniciyaYeniBirRolAtar() throws InterruptedException {
+    public void kullaniciSectigiKullaniciyaYeniBirRolAtar(){
 
         userDetailPage.addNewRoleToUser();
     }
 
     @Then("Kullanici yeni rolun eklendigini dogrular")
-    public void kullaniciYeniRolunEklendiginiDogrular() throws InterruptedException {
+    public void kullaniciYeniRolunEklendiginiDogrular(){
         userDetailPage.isNewRoleAdded();
     }
 

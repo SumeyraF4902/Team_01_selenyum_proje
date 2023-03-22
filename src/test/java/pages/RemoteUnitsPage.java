@@ -1,5 +1,6 @@
 package pages;
 
+import com.github.javafaker.Faker;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -24,10 +25,10 @@ public class RemoteUnitsPage {
         PageFactory.initElements(driver,this);
     }
 
-    @FindBy(linkText = "Remote Units")
+    @FindBy(id = "link4")
     WebElement remoteUnitsButton;
 
-    @FindBy(linkText = "Add New Remote Unit")
+    @FindBy(xpath = "//*[@id=\"MainContent\"]/div/div[1]/div[2]/a/button")
     WebElement addNewRemoteUnitButton;
 
     @FindBy(id="name")
@@ -42,34 +43,47 @@ public class RemoteUnitsPage {
     @FindBy(name = "description")
     WebElement departmentDescriptionButton;
 
-    @FindBy(linkText = "Save")
+    @FindBy(xpath = "//*[@id=\"MainContent\"]/div/div/div/div/div[2]/div[5]/div/span/div/button[1]")
     WebElement saveButton;
 
-    @FindBy(xpath = "//a[@href='#/department/230']")
-    WebElement ortakciEdit;
+    @FindBy(xpath = "//button[@class='btn btn-outline-dark']")
+    WebElement edit11;
 
 
-    @FindBy(linkText = "Edit Remote Unit")
+
+
+
+
+
+    @FindBy(xpath = "//*[@id=\"MainContent\"]/div[1]/div/a/button")
     WebElement editRemoteUnitButton;
 
     @FindBy(xpath = "//input[@name='short_name']")
     WebElement departmentShortName;
 
 
-    @FindBy(xpath = "//input[@placeholder='Department Description'")
+    @FindBy(xpath = "//input[@placeholder='Department Description']")
     WebElement departmentDescriptionButton2;
 
-    @FindBy(linkText = "Save")
+    @FindBy(xpath = "//*[@id=\"MainContent\"]/div/div[1]/div/div/div[2]/div[5]/div/span/div/button[1]")
     WebElement saveButton2;
 
-    @FindBy(xpath = "//a[@href='#/department/212']")
-    WebElement abcBirimButton;
 
-    @FindBy(linkText = "Edit Remote Unit")
+
+    @FindBy(xpath = "(//div[@class='col-4'])[2]//a")
+    WebElement randomUnitButton;
+
+    @FindBy(xpath = "(//div[@class='col-4'])[3]//a")
+    WebElement deleteUnitButtonr;
+
+    @FindBy(xpath = "//*[@id=\"MainContent\"]/div[1]/div/a/button")
     WebElement editRemoteUnitButton2;
 
-    @FindBy(linkText = "Delete Department")
+    @FindBy(xpath = "//*[@id=\"MainContent\"]/div/div[2]/div/button")
     WebElement deleteDepartmentButton;
+
+
+
 
 
 
@@ -101,6 +115,12 @@ public class RemoteUnitsPage {
 
     }
 
+    public void assertRemoteUnits(){
+        assertTrue(driver.getCurrentUrl().contains("remote"));
+
+
+    }
+
     public void addNewRemoteUnitButton(){
         waitUntilClickableElement(addNewRemoteUnitButton);
         addNewRemoteUnitButton.click();
@@ -110,7 +130,8 @@ public class RemoteUnitsPage {
 
     public void nameButton(){
         waitUntilClickableElement(nameButton);
-        nameButton.sendKeys();
+        Faker faker = new Faker();
+        nameButton.sendKeys(faker.internet().domainName());
 
     }
 
@@ -142,11 +163,20 @@ public class RemoteUnitsPage {
         saveButton.click();
     }
 
+    public void assertNewRemote(){
+        assertTrue(driver.getCurrentUrl().contains("new/remote"));
 
-    public void ortakciEdit(){
-        waitUntilClickableElement(ortakciEdit);
-        ortakciEdit.click();
     }
+
+
+
+    public void edit11(){
+        waitUntilClickableElement(edit11);
+        edit11.click();
+    }
+
+
+
 
     public void editRemoteUnitButton(){
         waitUntilClickableElement(editRemoteUnitButton);
@@ -155,12 +185,14 @@ public class RemoteUnitsPage {
 
     public void departmentShortName(){
         waitUntilClickableElement(departmentShortName);
-        departmentShortName.sendKeys();
+        Faker faker = new Faker();
+        departmentShortName.sendKeys(faker.internet().domainName());
     }
 
-    public void setDepartmentDescriptionButton2(){
+    public void departmentDescriptionButton2(){
         waitUntilClickableElement(departmentDescriptionButton2);
-        departmentDescriptionButton2.sendKeys();
+        Faker faker = new Faker();
+        departmentDescriptionButton2.sendKeys(faker.internet().domainWord());
     }
 
     public void saveButton2(){
@@ -168,9 +200,22 @@ public class RemoteUnitsPage {
         saveButton2.click();
     }
 
-    public void abcBirimButton(){
-        waitUntilClickableElement(abcBirimButton);
-        abcBirimButton.click();
+    public void assertEditRemote(){
+        assertTrue(driver.getCurrentUrl().contains("department/edit"));
+
+    }
+
+
+
+
+    public void randomUnitButton(){
+        waitUntilClickableElement(randomUnitButton);
+        randomUnitButton.click();
+    }
+
+    public void deleteUnitButtonr(){
+        waitUntilClickableElement(deleteUnitButtonr);
+        deleteUnitButtonr.click();
     }
 
     public void editRemoteUnitButton2(){
@@ -186,8 +231,6 @@ public class RemoteUnitsPage {
     public void acceptAllert(){
         driver.switchTo().alert().accept();
     }
-
-
 
 
 
