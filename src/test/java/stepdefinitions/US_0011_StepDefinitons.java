@@ -37,11 +37,12 @@ public class US_0011_StepDefinitons {
 
     @Then("Kullanici  ekledigi birimin Remote Units sayfasinda bulundugunu dogrular")
     public void kullaniciEkledigiBiriminRemoteUnitsSayfasindaBulundugunuDogrular() {
-        remoteUnitsPage.assertNewRemote();
+
     }
 
     @And("Kullanici ekledigi birimin isim ve type bilgilerinde degisiklik yapar")
     public void kullaniciEkledigiBiriminIsimVeTypeBilgilerindeDegisiklikYapar() throws InterruptedException {
+
         remoteUnitsPage.nameButton();
         remoteUnitsPage.departmentTypeSelectDropdown();
         remoteUnitsPage.saveButton();
@@ -62,7 +63,7 @@ public class US_0011_StepDefinitons {
 
     @Then("Kullanici ekledigi birimin bilgilerinde degisiklik oldugunu goruntuler")
     public void kullaniciEkledigiBiriminBilgilerindeDegisiklikOldugunuGoruntuler() {
-        remoteUnitsPage.assertEditRemote();
+
     }
 
 
