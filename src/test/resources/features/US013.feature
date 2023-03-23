@@ -9,7 +9,7 @@ Feature: US013 Teams Modulu Goruntuleme Testi
   @FirstHooks
   @Regression
   Scenario: TC002 Kullanici Teams modulundeki ilk takima tiklayarak takimi detayli olarak gorebilmeli
-    When Kullanici ilk siradaki takima tiklar
+    When Kullanici ilk secebildigi takima tiklar
     Then Kullanici tikladigi takimin bilgilerinin detayli olarak sayfada gorundugunu dogrular
   @FirstHooks
   @Regression
