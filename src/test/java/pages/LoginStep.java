@@ -1,6 +1,5 @@
 package pages;
 
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -8,20 +7,14 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import utilities.ConfigReader;
-
 import java.time.Duration;
-
-
 public class LoginStep {
-
     WebDriver driver;
 
     public LoginStep(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver,this);
     }
-
-
 
     @FindBy(id = "loginButton")
     WebElement login_button;
@@ -53,11 +46,10 @@ public class LoginStep {
     @FindBy(linkText = "Dashboard")
     public WebElement hamburger_check;
 
-
-
+    @FindBy(xpath = "//a[.='gm3wa-a3m-client']")
+    public WebElement ignorePage;
 
     public void driverGet(String text){
-
         driver.get(text);
     }
 
@@ -86,12 +78,11 @@ public class LoginStep {
         a.click();
     }
 
-
     public void AssertTrue(boolean a){
         Assert.assertTrue(a);
     }
     public String get_Config(String a ){
-       return ConfigReader.getProperty(a);
+        return ConfigReader.getProperty(a);
 
     }
 

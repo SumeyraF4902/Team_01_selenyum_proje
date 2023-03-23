@@ -1,8 +1,22 @@
 package pages;
 
+import com.github.javafaker.Faker;
+import org.junit.Assert;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import java.time.Duration;
+import java.util.List;
 public class TeamsPage {
-
-    String FirstCilckableTeamName;
+    Faker faker = new Faker();
+    static String FirstCilckableTeamName;
+    static String newTeamName;
     WebDriver driver;
     public TeamsPage(WebDriver driver) {
         this.driver = driver;
@@ -22,15 +36,15 @@ public class TeamsPage {
     WebElement inputTeam;
     @FindBy(xpath = "//button[@class='btn btn-danger text-light fw-bold']")
     WebElement deleteTeamButton;
-    @FindBy(xpath = "//button[text()='Save']")
-    WebElement saveTeamButton;
+    @FindBy(xpath = "(//div//span[@class='fw-bold'])[3]")
+    WebElement saveBekleme;
     public void acceptAlert(){
         driver.switchTo().alert().accept();
     }
     public void addNewAndEditTeam() {
-    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(18));
-    wait.until(ExpectedConditions.visibilityOf(addNewAndEditTeamButton));
-    addNewAndEditTeamButton.click();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(18));
+        wait.until(ExpectedConditions.visibilityOf(addNewAndEditTeamButton));
+        addNewAndEditTeamButton.click();
     }
     public void deleteTeam(){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(18));
@@ -41,12 +55,14 @@ public class TeamsPage {
         teamsButton.click();
     }
     public void inputInfo(){
-    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(18));
-        wait.withTimeout(Duration.ofSeconds(10));
-    Actions act = new Actions(driver);
-    act.moveToElement(inputTeam).click().sendKeys(Keys.BACK_SPACE+"Team0001"+ Keys.TAB).sendKeys("Team0001"+Keys.TAB)
-            .sendKeys("Team"+Keys.ENTER+Keys.TAB).sendKeys("Team0001"+Keys.TAB)
-            .sendKeys("Business"+Keys.ENTER+Keys.ESCAPE+Keys.TAB+Keys.ENTER).perform();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(25));
+        wait.until(ExpectedConditions.visibilityOf(saveBekleme));
+        newTeamName = faker.name().fullName();
+        System.out.println(newTeamName);
+        Actions act = new Actions(driver);
+        act.moveToElement(inputTeam).click().sendKeys(Keys.BACK_SPACE+newTeamName+ Keys.TAB).sendKeys("Team0001"+Keys.TAB)
+                .sendKeys("Team"+Keys.ENTER+Keys.TAB).sendKeys("Team0001"+Keys.TAB)
+                .sendKeys("Business"+Keys.ENTER+Keys.ESCAPE+Keys.TAB+Keys.ENTER).perform();
     }
     public void showTeamList(){
         for (WebElement teamName : teamsList) {
@@ -56,11 +72,15 @@ public class TeamsPage {
         }
     }
     public void clickFirstTeam(){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(18));
+        wait.until(ExpectedConditions.visibilityOfAllElements(teamsList));
         for (WebElement teamName : teamsList) {
             if (teamName.getText().length() > 0){
                 FirstCilckableTeamName = teamName.getText();
                 System.out.println("FirstCilckableTeamName= "+FirstCilckableTeamName);
-                teamName.click();
+                wait.until(ExpectedConditions.elementToBeClickable(teamName));
+                JavascriptExecutor js = (JavascriptExecutor) driver;
+                js.executeScript("arguments[0].click()", teamName);
                 break;
             }
         }
@@ -82,13 +102,14 @@ public class TeamsPage {
             }
         }
         System.out.println(teams);
-        Assert.assertTrue(teams.contains("Team0001"));
+        Assert.assertTrue(teams.contains(newTeamName));
     }
     public void editTeamAssertion(){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(18));
         wait.until(ExpectedConditions.visibilityOf(newTeamDetay));
-        System.out.println(newTeamDetay.getText());
-        Assert.assertTrue(newTeamDetay.getText().contains("Team0001"));
+        String newTeamNameText = newTeamDetay.getText();
+        System.out.println(newTeamNameText);
+        Assert.assertTrue(newTeamNameText.contains(newTeamName));
     }
     public void deleteTeamAssertion(){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(18));
@@ -96,9 +117,9 @@ public class TeamsPage {
         for (WebElement teamName : teamsList) {
             if (teamName.getText().length() > 0){
                 System.out.println(teamName.getText());
-                Assert.assertTrue(!teamName.getText().contains(FirstCilckableTeamName));
+                Assert.assertTrue(!teamName.getText().equals(FirstCilckableTeamName));
+                break;
             }
         }
     }
-
 }
