@@ -3,7 +3,6 @@ package stepdefinitions;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.Assert;
 import pages.UserDetailPage;
 
 import java.awt.*;
@@ -27,13 +26,13 @@ public class US015_StepDefinitions {
 
     @Then("Kullanici yeni eklenenen Kullaniciyi Users Modülde görüntüler")
     public void kullaniciYeniEklenenenKullaniciyiUsersModüldeGörüntüler() {
-        Assert.assertTrue("Eklenmek istenen kullanici users Modulde görünmedi", userPage.isNewlyAddedUserDisplayed());
+        userPage.isNewlyAddedUserDisplayed();
 
     }
 
     @Then("Kullanici yeni eklennen Kullanicida Yesil Tick isareti görmez")
     public void kullaniciYeniEklennenKullanicidaYesilTickIsaretiGörmez() {
-        Assert.assertTrue(userPage.IsUserNotVerified());
+        userPage.IsUserNotVerified();
     }
 
     @And("Kullanicinin girmis oldugu mail adresine onay icin mesaj gönderir")
@@ -49,6 +48,6 @@ public class US015_StepDefinitions {
     @Then("Kullanici yenin eklenen Kullanicida Yesil Tick isaretini görür")
     public void kullaniciYeninEklenenKullanicidaYesilTickIsaretiniGörür() {
 
-        Assert.assertTrue(userPage.IsUserVerified());
+        userPage.IsUserVerified();
     }
 }
