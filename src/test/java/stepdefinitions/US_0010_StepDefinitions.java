@@ -4,7 +4,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.testng.Assert;
 import pages.RemoteUnitsPage;
-import pages.US017Page;
+
 import utilities.Driver;
 
 public class US_0010_StepDefinitions {

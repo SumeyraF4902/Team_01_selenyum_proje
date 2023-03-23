@@ -23,7 +23,9 @@ public class SecondHooks {
      ls.typeUsername(email);
      ls.typePassword(password);
      ls.clickSubBtn();
-
+        if (ls.ignorePage.isDisplayed()){
+            ls.ignorePage.click();
+        }
 
 
 
