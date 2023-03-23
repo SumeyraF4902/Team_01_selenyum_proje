@@ -10,6 +10,8 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         features = {"src/test/resources/features/US003.feature"},
         glue = {"stepdefinitions","Hooks"},
+        plugin = {"html: target/cucumber-reports",
+        "com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"},
         tags= "@SecondHooks"
 )
 

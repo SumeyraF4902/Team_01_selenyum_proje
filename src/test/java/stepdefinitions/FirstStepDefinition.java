@@ -15,7 +15,7 @@ public class FirstStepDefinition {
     @When("Senaryomu calistirdigimda")
     public void senaryomu_calistirdigimda() {
         System.out.println("When step i calisti");
-        Assert.assertTrue(false);
+        Assert.fail();
     }
 
     @Then("Senaryomun calistigini konsolda gormeliyim")

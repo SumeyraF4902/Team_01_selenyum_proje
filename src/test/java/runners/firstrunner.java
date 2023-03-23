@@ -9,9 +9,11 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         features = {"src/test/resources/features/feature.feature"},
         glue = {"Hooks","stepdefinitions"},
+        plugin = {"html: target/cucumber-reports",
+                "com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"},
+        monochrome = true,
         tags= "@FirstHooks"
 )
-
 public class firstrunner {
 
 
