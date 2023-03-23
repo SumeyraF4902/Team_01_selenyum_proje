@@ -9,7 +9,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.asserts.SoftAssert;
+
 import utilities.Driver;
 
 import java.awt.*;
@@ -27,14 +27,12 @@ public class UserDetailPage {
     WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(10));
     Faker faker = new Faker();
     Actions action = new Actions(Driver.getDriver());
-    SoftAssert sa = new SoftAssert();
+
 
     static private int notVerifiedEmailsSize;
     static private int verifiedEmailsSize;
     static private String mailAdress;
     static private List<String> userList = new ArrayList<>();
-    private List<String> characters = new ArrayList<>(Arrays.asList("!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "+", "{", "}", ":", "<", ">", "?", "=", "[", "]", ";", "'", ",", "/"));
-
     static private String mainPage;
     static private String username = "";
     static private int actualRoleSize;
@@ -118,17 +116,11 @@ public class UserDetailPage {
     @FindBy(xpath = "//table//tbody//td[2]/a")
     private List<WebElement> userCell;
 
-    @FindBy(xpath = "//table//tbody")
-    private WebElement tableBody;
-
 
     public void verifiedEmailsAndNotVerifiedEmailsCount() {
 
-        //verifiedEmailsSize = driver.findElements(By.cssSelector("path[fill='#08875D']")).size();
-
-        //notVerifiedEmailsSize = = driver.findElements(By.cssSelector("path[fill='none']")).size();
-        verifiedEmailsSize = verifiedEmails.size();
-        notVerifiedEmailsSize = notVerifiedEmails.size();
+        verifiedEmailsSize = (driver.findElements(By.cssSelector("path[fill='#08875D']"))).size();
+        notVerifiedEmailsSize = (driver.findElements(By.cssSelector("path[fill='none']"))).size();
     }
 
     public void navigateToUserModul() {
@@ -144,37 +136,21 @@ public class UserDetailPage {
         mainPage = driver.getWindowHandle();
         driver.switchTo().newWindow(WindowType.TAB);
 
-        // 2. temp mail adresi icin olusturuldu
-        //  driver.get("https://www.tmail.gg/en");
-        //  WebElement copyEmail = driver.findElement(By.cssSelector(".custom-email-botton"));
-        //  wait.until(ExpectedConditions.attributeToBe(copyEmail, "disabled", null));
-        //  copyEmail.click();
-        //  mailAdress = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
-
         driver.get("https://tempmailo.com/");
-
-        WebElement copyMail = driver.findElement(By.cssSelector(".iconx"));
-        WebElement changeMail = driver.findElement(By.xpath("//span[text()='Change']"));
-        WebElement alertMessage = driver.findElement(By.xpath("//button[contains(text(),'Ok')]"));
-
-        copyMail.click();
+        driver.findElement(By.cssSelector(".iconx")).click();
         mailAdress = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
         while (mailAdress.contains(".biz") || mailAdress.contains(".live")) {
-            changeMail.click();
-            alertMessage.click();
-            copyMail.click();
-            // driver.findElement(By.xpath("//span[text()='Change']")).click();
-            // driver.findElement(By.xpath("//button[contains(text(),'Ok')]")).click();
-            // driver.findElement(By.cssSelector(".iconx")).click();
+            driver.findElement(By.xpath("//span[text()='Change']")).click();
+            driver.findElement(By.xpath("//button[contains(text(),'Ok')]")).click();
+            driver.findElement(By.cssSelector(".iconx")).click();
             mailAdress = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
         }
 
 
         driver.switchTo().window(mainPage);
 
-
-        // notVerifiedEmailsSize = notVerifiedEmails.size();
-        // verifiedEmailsSize = verifiedEmails.size();
+        notVerifiedEmailsSize = notVerifiedEmails.size();
+        verifiedEmailsSize = verifiedEmails.size();
 
         newUserRegistrationButton.click();
         selectRoleButton.click();
@@ -190,10 +166,10 @@ public class UserDetailPage {
     }
 
 
-    public boolean isNewlyAddedUserDisplayed() {
+    public void isNewlyAddedUserDisplayed() {
         navigateToUserModul();
-        String body = tableBody.getText();
-        return body.contains(mailAdress);
+        String body = driver.findElement(By.xpath("//table//tbody")).getText();
+        Assert.assertTrue("Eklenmek istenen kullanici users Modulde görünmedi",body.contains(mailAdress));
 
     }
 
@@ -214,31 +190,32 @@ public class UserDetailPage {
                 break;
         }
 
-
         //mail in ulasmasi icin bekleme süresi
-          Thread.sleep(2000);
-        // 2. mail adresi sitesi icin olusturuldu
-        //  driver.findElement(By.xpath("//a[text()=' Refresh']")).click();
-        //  action.moveToElement(driver.findElement(By.linkText("A3M Email Verification"))).click().perform();
-        //  driver.switchTo().frame("myIframe");
-        //  action.moveToElement(driver.findElement(By.linkText("Click to verify your email"))).click().perform();
+        Thread.sleep(2000);
+        WebElement refreshButton =  driver.findElement(By.cssSelector(".prim-btn"));
+        refreshButton.click();
 
-        driver.findElement(By.cssSelector(".prim-btn")).click();
+        WebElement mail = driver.findElement(By.xpath("//div[text()='A3M Email Verification']"));
 
-        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//div[text()='A3M Email Verification']"))));
-        action.moveToElement(driver.findElement(By.xpath("//div[text()='A3M Email Verification']"))).click().perform();
+        action.moveToElement(mail).click().perform();
         action.sendKeys(Keys.PAGE_DOWN).perform();
-        driver.switchTo().frame("fullmessage");
-        driver.findElement(By.linkText("Click to verify your email")).click();
+        driver.switchTo().frame("fullmessage").findElement(By.linkText("Click to verify your email")).click();
+
+        WebElement verifyEmail = driver.findElement(By.linkText("Click to verify your email"));
+        action.moveToElement(verifyEmail).click(verifyEmail).perform();
+
         driver.switchTo().window(mainPage);
+
+
     }
 
-    public boolean IsUserNotVerified() {
-        return notVerifiedEmailsSize == notVerifiedEmails.size() - 1;
+    public void IsUserNotVerified() {
+        Assert.assertEquals(notVerifiedEmails.size()-1,notVerifiedEmailsSize);
     }
 
-    public boolean IsUserVerified() {
-        return verifiedEmailsSize == verifiedEmails.size() - 1;
+    public void IsUserVerified() {
+        driver.navigate().refresh();
+        Assert.assertEquals(verifiedEmailsSize+1, verifiedEmails.size());
     }
 
     public void selectUser() {
@@ -259,14 +236,14 @@ public class UserDetailPage {
 
     }
 
-    public void isDefaultRolePassiv() {
+    public void isDefaultRolePassiv(){
 
         List<WebElement> aktifRol = driver.findElements(By.cssSelector(".active-roles-box svg"));
         wait.until(ExpectedConditions.visibilityOf(aktifRol.get(0)));
         boolean flag = false;
         System.out.println("aktifRol.size() = " + aktifRol.size());
-        for (int i = 0; i < aktifRol.size(); i++) {
-            if (aktifRol.get(i).getAttribute("class").contains("text-danger")) {
+        for (WebElement webElement : aktifRol) {
+            if (webElement.getAttribute("class").contains("text-danger")) {
                 flag = true;
                 break;
             }
@@ -276,13 +253,13 @@ public class UserDetailPage {
     }
 
     public void isMailAddressPassiv() {
-        sa.assertTrue(email.getAttribute("type") == null);
-        sa.assertAll("Mail adresi pasif degil");
+        Assert.assertNull(email.getAttribute("type"));
+
 
     }
 
     public void isUsernameBlankable() {
-        sa.assertEquals(alertMessage.getText(), "Username cannot be empty");
+        Assert.assertEquals("Username cannot be empty", alertMessage.getText());
     }
 
     public void saveEdit() {
@@ -295,19 +272,22 @@ public class UserDetailPage {
         userName.sendKeys(username);
     }
 
-    public void enterUsernameWithSpecialCharacter() {
+    public void
+    enterUsernameWithSpecialCharacter() {
         userName.clear();
+        List<String> characters = new ArrayList<>(Arrays.asList("!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "+", "{", "}", ":", "<", ">", "?", "=", "[", "]", ";", "'", ",", "/"));
         Random random = new Random();
+        int character;
         for (int i = 0; i < 5; i++) {
-            int number = random.nextInt(characters.size() - 1);
-            username += characters.get(number);
+            character = random.nextInt(characters.size() - 1);
+            username += characters.get(character);
         }
         userName.sendKeys(username);
 
     }
 
     public void isUsernameEditableWithSpecialCharacters() {
-        sa.assertEquals("Username may contain letters (A-Za-z), numbers (0-9), and special characters of -._", alertMessage.getText());
+        Assert.assertEquals("Username may contain letters (A-Za-z), numbers (0-9), and special characters of -._", alertMessage.getText());
     }
 
     public void renameUsernameWithValidUsername() {
@@ -344,35 +324,33 @@ public class UserDetailPage {
         actualRoleSize = addedRoles.size();
         addRoleButton.click();
 
-        action.moveToElement(driver.findElement(By.cssSelector("div[class=' css-1xc3v61-indicatorContainer']"))).click().perform();
-        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//div[contains(@id,'option')]")))).click();
-
+        action.moveToElement(driver.findElement(By.xpath("//div[text()='Select Role']"))).click().perform();
+        driver.findElement(By.xpath("//div[contains(@id,'option')]")).click();
 
         saveRoleButton.click();
 
 
     }
 
-    public void isNewRoleAdded()  {
-        driver.navigate().refresh();
-       // Thread.sleep(2000);
+    public void isNewRoleAdded(){
+
         int actualRolSize = driver.findElements(By.xpath("//span[contains(@class,'roles')]")).size();
         Assert.assertEquals("Rol eklenmedi", actualRoleSize + 1, actualRolSize);
     }
 
     public void addBlankUsername() {
-        action.click(userName).sendKeys(Keys.CONTROL, "a", Keys.BACK_SPACE).perform();
+        action.click(userName).sendKeys(Keys.CONTROL,"a",Keys.BACK_SPACE).perform();
     }
 
     public void isUsernameEditableWithNumbers() {
-        sa.assertTrue(alertMessage.isDisplayed());
+        Assert.assertTrue(alertMessage.isDisplayed());
     }
 
     public void saveEditable() {
         saveEditButton.click();
         List<WebElement> saveButton = driver.findElements(By.xpath("//p[text()='User information updated successfully']"));
-        sa.assertFalse(saveButton.size() == 1);
-        sa.assertAll("Kullanici invalid Username olusturabilmektedir");
+        Assert.assertNotEquals("Kullanici invalid Username olusturabilmektedir", 1, saveButton.size());
+
     }
 
 

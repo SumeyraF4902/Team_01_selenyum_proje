@@ -12,7 +12,6 @@ public class US016_StepDefinitions {
     public void kullaniciBilgileriniDüzenlemekIstedigiKullaniciyiSecer() {
         userDetailPage.selectUser();
 
-
     }
 
     @When("Kullanici bilgilerini düzenlemek icin edit butonuna basar")
