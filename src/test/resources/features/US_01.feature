@@ -25,6 +25,7 @@
     Background : Kullanici url'ye gider.ve login butonuna tıklar.
 
     @ThirdHooks
+    @Smoke
     Scenario: TC_0001 valid credential
       When : Kullanici '@' ve '.' işareti içeren geçerli bir e-mail ve geçerli password girer.
       Then : Kullanici e-mail adresinin '@' ve '.' işareti içerdiğini kontrol eder.
@@ -32,6 +33,7 @@
       Then :Kullanıcı siteye giriş yaptığını doğrular .
 
     @ThirdHooks
+    @Smoke
     Scenario: TC_0002 invalid credential
       When : Kullanici credential'a uymayan e-mail adresi girer.
         | @ |
@@ -40,6 +42,7 @@
       Then : Kullanici "Not Authorized. Please try with valid credentials" uyarısını aldığını doğrular.
 
     @ThirdHooks
+    @Smoke
     Scenario: TC_0003 invalid credential
       When : Kullanici crendential içermeyen e-mail adresi girer.
       And : Kullanıcı sign in butonuna tıklar
