@@ -4,15 +4,12 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.openqa.selenium.WebDriver;
-import pages.LoginStep;
 
-import pages.US003Page;
-import utilities.ConfigReader;
+import pages.DropDownPage;
 import utilities.Driver;
 
 public class US003_StepDefinitions {
-    US003Page US003Page=new US003Page(Driver.getDriver());
+    DropDownPage US003Page=new DropDownPage(Driver.getDriver());
     @Given("Kullanici marketplace sayfasindadir")
     public void kullaniciMarketplaceSayfasindadir() {
       US003Page.AssertIfOnMarketPlace();

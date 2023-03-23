@@ -1,12 +1,8 @@
 package pages;
 
 
-import io.cucumber.java.Scenario;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -15,12 +11,12 @@ import utilities.Driver;
 import java.time.Duration;
 import static org.junit.Assert.assertTrue;
 
-public class US003Page {
+public class DropDownPage {
 
 
     WebDriver driver;
 
-    public US003Page(WebDriver driver) {
+    public DropDownPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver,this);
     }
@@ -63,7 +59,7 @@ public class US003Page {
 
     public void AssertIfOnMarketPlace(){
         waitUntilElement(DropdownMenu);
-        assertTrue(driver.getCurrentUrl().toString().contains("mlm"));
+        assertTrue(driver.getCurrentUrl().contains("mlm"));
 
     }
 
