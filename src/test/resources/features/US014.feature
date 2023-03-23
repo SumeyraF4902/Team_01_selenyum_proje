@@ -2,7 +2,7 @@ Feature: US014 Teams Modulu Degisiklik Testi
 
   Background: Kullanici her senaryodan once Teams modulune gelir
     When Kullanici Teams butonuna tiklar
-    And Kullanici ilk sıradaki takima tiklar
+    And Kullanici ilk secilebilen takima tiklar
     And Kullanici sayfada sag ustte bulunan Edit Team butonuna tiklar
   @FirstHooks
   @Regression
