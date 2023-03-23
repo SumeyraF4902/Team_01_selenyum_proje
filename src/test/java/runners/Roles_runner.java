@@ -9,7 +9,8 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         features ={"src/test/resources/features/roles.feature"},
         glue = {"Hooks" ,"stepdefinitions"},
-        plugin ={"pretty"},
+        plugin = {"pretty","html: target/cucumber-reports",
+                "com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"},
         tags= "@FirstHooks"
 
 )

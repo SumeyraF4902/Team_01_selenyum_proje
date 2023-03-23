@@ -10,7 +10,8 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         features = {"src/test/resources/features/US_0011.feature"},
         glue = {"stepdefinitions", "Hooks"},
-        plugin = {"pretty"},
+        plugin = {"pretty","html: target/cucumber-reports",
+                "com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"},
         monochrome = true,
         tags ="@FirstHooks"
 )

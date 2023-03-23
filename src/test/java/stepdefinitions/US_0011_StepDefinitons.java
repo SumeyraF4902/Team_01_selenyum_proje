@@ -3,8 +3,12 @@ package stepdefinitions;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.interactions.Actions;
 import pages.RemoteUnitsPage;
 import utilities.Driver;
+
+import java.security.Key;
 
 public class US_0011_StepDefinitons {
 
@@ -38,9 +42,7 @@ public class US_0011_StepDefinitons {
 
     @And("Kullanici ekledigi birimin isim ve type bilgilerinde degisiklik yapar")
     public void kullaniciEkledigiBiriminIsimVeTypeBilgilerindeDegisiklikYapar() throws InterruptedException {
-        remoteUnitsPage.addNewRemoteUnitButton();
         remoteUnitsPage.nameButton();
-        Thread.sleep(5000);
         remoteUnitsPage.departmentTypeSelectDropdown();
         remoteUnitsPage.saveButton();
 

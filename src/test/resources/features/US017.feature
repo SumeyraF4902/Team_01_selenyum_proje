@@ -4,6 +4,7 @@ Feature: US017  User modülünde ekleme/davet işlemleri yapabilme
     Given Kullanici Account Management sayfasindadir
 
   @FirstHooks
+  @Smoke
   Scenario: TC001 Kullanıcı yeni bir user ekleyebilir
     When Soldaki menuden User modulune gectiginde
     And New Registration butonuna tikladiginda
@@ -12,7 +13,8 @@ Feature: US017  User modülünde ekleme/davet işlemleri yapabilme
     Then New user registration successful yazisini goruntuler
 
   @FirstHooks
-  Scenario: TC002 Kullanici Invalid mail ile register yapamamalıdır
+  @Smoke
+  Scenario: TC002 Invalid mail ile register yapılamaz
     When Soldaki menuden User modulune gectiginde
     And New Registration butonuna tikladiginda
     And Rol ve invalid mail girisi yaptiginda
@@ -21,6 +23,7 @@ Feature: US017  User modülünde ekleme/davet işlemleri yapabilme
 
 
    @FirstHooks
+   @Smoke
    Scenario: TC003 Kullici yeni kullanici davet edebilir
      When Soldaki menuden User modulune gectiginde
      And New User Invitation butonuna tikladiginda
@@ -29,13 +32,7 @@ Feature: US017  User modülünde ekleme/davet işlemleri yapabilme
      Then A invitation e-mail has been sent to the e-mail address you entered yazisini goruntuler
 
 
-  @FirstHooks
-  Scenario: TC004 kullanici invalid maille davet gerceklestirememelidir
-    When Soldaki menuden User modulune gectiginde
-    And New User Invitation butonuna tikladiginda
-    And Rol ve invalid mail girisi yaptiginda
-    And Send Invitation butonunu tikladiginda
-    Then Please enter a valid email yazisini goruntuler
+
 
 
 

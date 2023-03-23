@@ -14,6 +14,7 @@
 
       Background:  Kullanici URL'e gider ve Kullanici login butonuna tıklar.Gerekli bilgileri girip login olur.
         @SecondHooks
+        @Smoke
         Scenario: logo ve hamburger doğrulama
         Then : Siteye giriş yaptığını doğrular
         When : Logoya tıkladığında

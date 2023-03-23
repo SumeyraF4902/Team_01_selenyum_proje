@@ -67,6 +67,4 @@ public class US017_StepDefinitions {
     public void aInvitationEMailHasBeenSentToTheEMailAddressYouEnteredYazisiniGoruntuler() {
         us017Page.mailSentAlert();
     }
-
-
 }
