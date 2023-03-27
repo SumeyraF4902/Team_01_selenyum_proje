@@ -2,22 +2,18 @@ package pages;
 
 import com.github.javafaker.Faker;
 import org.junit.Assert;
-import org.junit.Test;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import utilities.Driver;
-
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.time.Duration;
-
 import java.util.*;
 import java.util.List;
 
@@ -84,7 +80,7 @@ public class UserDetailPage {
     @FindBy(xpath = "//span[contains(@class,'roles')]")
     private List<WebElement> addedRoles;
 
-    @FindBy(xpath = "//button[text()='+ New User Registration']")
+    @FindBy(xpath = "//button[text()='+ Register New User']")
     private WebElement newUserRegistrationButton;
 
     @FindBy(xpath = "//input[@role='combobox']")
@@ -94,6 +90,7 @@ public class UserDetailPage {
     private WebElement registerButton;
 
     @FindBy(xpath = "//button[text()='Close']")
+    // @FindBy(css = "div[class=' css-1xc3v61-indicatorContainer']")
     private WebElement registerWindowCloseButton;
 
     @FindBy(css = ".btn.btn-transparent.p-0")
@@ -124,7 +121,7 @@ public class UserDetailPage {
     }
 
     public void navigateToUserModul() {
-
+        driver.navigate().refresh();
         usersButton.click();
         verifiedEmailsAndNotVerifiedEmailsCount();
 
@@ -136,15 +133,26 @@ public class UserDetailPage {
         mainPage = driver.getWindowHandle();
         driver.switchTo().newWindow(WindowType.TAB);
 
-        driver.get("https://tempmailo.com/");
-        driver.findElement(By.cssSelector(".iconx")).click();
+        driver.get("https://mail.tm/en/");
+        driver.findElement(By.xpath("//button[@mode='primary']")).click();
+        driver.findElement(By.id("DontUseWEBuseAPI")).click();
         mailAdress = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
-        while (mailAdress.contains(".biz") || mailAdress.contains(".live")) {
-            driver.findElement(By.xpath("//span[text()='Change']")).click();
-            driver.findElement(By.xpath("//button[contains(text(),'Ok')]")).click();
-            driver.findElement(By.cssSelector(".iconx")).click();
-            mailAdress = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
-        }
+
+//ikincil mail adresi
+     //   driver.get("https://tempail.com/");
+     //   driver.findElement(By.xpath("//p[text()='Consent']")).click();
+     //   mailAdress = driver.findElement(By.className("adres-input")).getAttribute("value");
+     //   System.out.println("mailAdress = " + mailAdress);
+//birincil mail adresi
+        //  driver.get("https://tempmailo.com/");
+        //  driver.findElement(By.cssSelector(".iconx")).click();
+        //  mailAdress = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
+        //   while (mailAdress.contains(".biz") || mailAdress.contains(".live")|| mailAdress.contains(".wiki")) {
+        //       driver.findElement(By.xpath("//span[text()='Change']")).click();
+        //       driver.findElement(By.xpath("//button[contains(text(),'Ok')]")).click();
+        //       driver.findElement(By.cssSelector(".iconx")).click();
+        //       mailAdress = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
+        //   }
 
 
         driver.switchTo().window(mainPage);
@@ -168,20 +176,29 @@ public class UserDetailPage {
 
     public void isNewlyAddedUserDisplayed() {
         navigateToUserModul();
-        String body = driver.findElement(By.xpath("//table//tbody")).getText();
-        Assert.assertTrue("Eklenmek istenen kullanici users Modulde görünmedi",body.contains(mailAdress));
+
+        boolean flag = false;
+        for(WebElement value : registratedMails){
+            if(value.getText().equals(mailAdress)){
+                flag=true;
+                break;
+            }
+        }
+        Assert.assertTrue("Eklenmek istenen kullanici users Modulde görünmedi", flag);
 
     }
 
     public void sendVerifyEmailToUser() {
 
-        userActionButton.click();
+        By userAction = By.xpath("(//button[@tabindex='0'])[2]");
+        WebElement action = driver.findElement(userAction);
+        action.click();
         sendVerifyEmailButton.click();
 
 
     }
 
-    public void verifyEmail() throws InterruptedException {
+    public void verifyEmail() {
 
         Set<String> windowsHandles = driver.getWindowHandles();
         for (String value : windowsHandles) {
@@ -190,19 +207,38 @@ public class UserDetailPage {
                 break;
         }
 
-        //mail in ulasmasi icin bekleme süresi
-        Thread.sleep(2000);
-        WebElement refreshButton =  driver.findElement(By.cssSelector(".prim-btn"));
-        refreshButton.click();
-
-        WebElement mail = driver.findElement(By.xpath("//div[text()='A3M Email Verification']"));
-
-        action.moveToElement(mail).click().perform();
+        driver.findElement(By.xpath("(//a[@href='/en/'])[2]")).click();
+        driver.findElement(By.xpath("//div[contains(text(),'A3M Email Verification')]")).click();
+        driver.switchTo().frame("iFrameResizer0");
         action.sendKeys(Keys.PAGE_DOWN).perform();
-        driver.switchTo().frame("fullmessage").findElement(By.linkText("Click to verify your email")).click();
+        driver.findElement(By.xpath("//a[text()='Click to verify your email']")).click();
+       // action.moveToElement(driver.findElement(By.xpath("//a[text()='Click to verify your email']"))).click().perform();
 
-        WebElement verifyEmail = driver.findElement(By.linkText("Click to verify your email"));
-        action.moveToElement(verifyEmail).click(verifyEmail).perform();
+
+//ikincil mail adresi
+       // driver.findElement(By.cssSelector(".fa.fa-reload")).click();
+       // driver.findElement(By.xpath("//div[text()='A3M Email Verification']")).click();
+       // driver.switchTo().frame("iframe");
+       // driver.findElement(By.linkText("Click to verify your email")).click();
+
+        //birincil mail adresi
+        //  WebElement refreshButton = driver.findElement(By.cssSelector(".prim-btn"));
+        //  for(int i = 0; i<5;i++){
+        //      refreshButton.click();
+        //  }
+
+        //  ReusableMethodsEllyHocam.
+        //          fluentWait(driver.findElement(By.xpath("//div[text()='A3M Email Verification']")),5);
+
+        //  WebElement mail = driver.findElement(By.xpath("//div[text()='A3M Email Verification']"));
+
+        //  action.moveToElement(mail).click().perform();
+        //  action.sendKeys(Keys.PAGE_DOWN).perform();
+        //  driver.switchTo().frame("fullmessage").findElement(By.linkText("Click to verify your email")).click();
+
+        //  WebElement verifyEmail = driver.findElement(By.linkText("Click to verify your email"));
+        //  action.moveToElement(verifyEmail).click(verifyEmail).perform();
+
 
         driver.switchTo().window(mainPage);
 
@@ -210,20 +246,22 @@ public class UserDetailPage {
     }
 
     public void IsUserNotVerified() {
-        Assert.assertEquals(notVerifiedEmails.size()-1,notVerifiedEmailsSize);
+        Assert.assertEquals(notVerifiedEmails.size() - 1, notVerifiedEmailsSize);
     }
 
     public void IsUserVerified() {
         driver.navigate().refresh();
-        Assert.assertEquals(verifiedEmailsSize+1, verifiedEmails.size());
+        usersButton.click();
+
+      //  driver.findElement(By.linkText("#/users")).click();
+        Assert.assertEquals(verifiedEmailsSize + 1, verifiedEmails.size());
     }
 
     public void selectUser() {
-        action.sendKeys(Keys.PAGE_DOWN).perform();
+      //  action.sendKeys(Keys.PAGE_DOWN).perform();
         for (WebElement value : users) {
             if (value.getText().length() > 1) {
                 wait.until(ExpectedConditions.elementToBeClickable(value));
-
                 action.moveToElement(value).click().perform();
                 break;
             }
@@ -236,7 +274,7 @@ public class UserDetailPage {
 
     }
 
-    public void isDefaultRolePassiv(){
+    public void isDefaultRolePassiv() {
 
         List<WebElement> aktifRol = driver.findElements(By.cssSelector(".active-roles-box svg"));
         wait.until(ExpectedConditions.visibilityOf(aktifRol.get(0)));
@@ -332,14 +370,14 @@ public class UserDetailPage {
 
     }
 
-    public void isNewRoleAdded(){
-
+    public void isNewRoleAdded() {
+        driver.navigate().refresh();
         int actualRolSize = driver.findElements(By.xpath("//span[contains(@class,'roles')]")).size();
-        Assert.assertEquals("Rol eklenmedi", actualRoleSize + 1, actualRolSize);
+       Assert.assertEquals("Rol eklenmedi", actualRoleSize + 1, actualRolSize);
     }
 
     public void addBlankUsername() {
-        action.click(userName).sendKeys(Keys.CONTROL,"a",Keys.BACK_SPACE).perform();
+        action.click(userName).sendKeys(Keys.CONTROL, "a", Keys.BACK_SPACE).perform();
     }
 
     public void isUsernameEditableWithNumbers() {
