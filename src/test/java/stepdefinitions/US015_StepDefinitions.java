@@ -41,7 +41,7 @@ public class US015_StepDefinitions {
     }
 
     @And("Kullanici mail adresini onaylar")
-    public void kullaniciMailAdresiniOnaylar() throws InterruptedException {
+    public void kullaniciMailAdresiniOnaylar() {
         userPage.verifyEmail();
     }
 
