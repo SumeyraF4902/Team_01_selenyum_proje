@@ -14,8 +14,5 @@ import org.junit.runner.RunWith;
                 "json:target/json-reports/cucumber.json"},
         monochrome = true
 )
-
-public class US_0015_Runner {
-
-
+public class US006_Runner {
 }
