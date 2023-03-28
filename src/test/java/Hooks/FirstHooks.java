@@ -19,9 +19,6 @@ public class FirstHooks {
         ls.typeUsername(email);
         ls.typePassword(password);
         ls.clickSubBtn();
-        if (ls.ignorePage.isDisplayed()){
-            ls.ignorePage.click();
-        }
         ls.clickprofile();
         ls.clickAccount_mng();
     }
